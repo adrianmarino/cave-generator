@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using System;
+﻿using System;
+using UnityEngine;
 
 public class MapGenerator : MonoBehaviour
 {
@@ -24,9 +24,17 @@ public class MapGenerator : MonoBehaviour
         return map;
     }
 
+    double CurrentMillis()
+    {
+        return (DateTime.Now - DateTime.MinValue).TotalMilliseconds;
+        
+    }
+    
     System.Random CreateRandom()
     {
-        return new System.Random(Time.time.GetHashCode());
+        var seed = CurrentMillis().GetHashCode();
+        Debug.LogFormat("Seed: {0}", seed);
+        return new System.Random(seed);
     }
 
     private void OnDrawGizmos()
@@ -35,7 +43,7 @@ public class MapGenerator : MonoBehaviour
         Draw(map, width, height);
     }
 
-    void Draw(int[,] map, int width, int height)
+    static void Draw(int[,] map, int width, int height)
     {
         for (int x = 0; x < width; x++)
             for (int y = 0; y < height; y++)
