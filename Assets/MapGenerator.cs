@@ -8,6 +8,12 @@ public class MapGenerator : MonoBehaviour
         map = Generate(width, height);
     }
 
+    private void Update()
+    {
+        if(Input.GetMouseButtonDown(0))
+            Start();
+    }
+
     int[,] Generate(int width, int height)
     {
         var map = new int[width, height];
@@ -32,9 +38,7 @@ public class MapGenerator : MonoBehaviour
     
     System.Random CreateRandom()
     {
-        var seed = CurrentMillis().GetHashCode();
-        Debug.LogFormat("Seed: {0}", seed);
-        return new System.Random(seed);
+        return new System.Random(CurrentMillis().GetHashCode());
     }
 
     private void OnDrawGizmos()
