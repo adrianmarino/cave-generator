@@ -43,10 +43,10 @@ public class MapGenerator : MonoBehaviour
 
     public MapGenerator()
     {
-        width = 60;
-        height = 80;
-        randomFillPercent = 50;
-        smoothSteps = 5;
+        width = 120;
+        height = 72;
+        randomFillPercent = 45;
+        smoothSteps = 7;
         maxWallCount = 4;
         neighbourOffset = 1;
     }
