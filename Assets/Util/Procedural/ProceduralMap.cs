@@ -3,18 +3,18 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Util
+namespace Util.Procedural
 {
-    public class Map: IEnumerable<Cell>, ICloneable
+    public class ProceduralMap: IEnumerable<Cell>, ICloneable
     {        
-        public Map Fill(Random random, int randomFillPercent)
+        public ProceduralMap Fill(Random random, int randomFillPercent)
         {
             var map = Copy();
             map.ForEach(cell => cell.Value = IsEdge(cell) ? 1 : GenerateValue(random, randomFillPercent));
             return map;
         }
 
-        public Map Smooth(int steps, int maxWallCount, int neighbourOffset)
+        public ProceduralMap Smooth(int steps, int maxWallCount, int neighbourOffset)
         {
             var map = Copy();
             for (var step = 0; step < steps; step++)
@@ -100,14 +100,14 @@ namespace Util
                     yield return new Cell(this, new Point(x, y));
         }
         
-        Map Copy()
+        public ProceduralMap Copy()
         {
-            return (Map) Clone();
+            return (ProceduralMap) Clone();
         }
         
         public object Clone()
         {
-            var clone = new Map(width, height);
+            var clone = new ProceduralMap(width, height);
             if (map == null) return clone;
 
             clone.ForEach(cell => cell.Value = Value(cell.Point));
@@ -133,7 +133,7 @@ namespace Util
 
         #region Constructors
         
-        public Map(int width, int height)
+        public ProceduralMap(int width, int height)
         {
             this.width = width;
             this.height = height;

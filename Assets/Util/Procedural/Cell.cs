@@ -1,4 +1,4 @@
-﻿namespace Util
+﻿namespace Util.Procedural
 {
     public class Cell
     {
@@ -20,9 +20,9 @@
 
         private Point point;
 
-        private Map map;
+        private ProceduralMap map;
 
-        public Cell(Map map, Point point)
+        public Cell(ProceduralMap map, Point point)
         {
             this.point = point;
             this.map = map;

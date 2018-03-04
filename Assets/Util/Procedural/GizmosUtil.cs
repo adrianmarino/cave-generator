@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
 
-namespace Util
+namespace Util.Procedural
 {
     public class GizmosUtil
     {
-        public static void DrawPoint(Map map, Cell cell)
+        public static void DrawPoint(ProceduralMap map, Cell cell)
         {
             Gizmos.color = cell.Value == 1 ? Color.black : Color.white;
             Vector3 position = new Vector3(

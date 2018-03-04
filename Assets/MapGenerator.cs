@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
 using Util;
+using Util.Procedural;
 
 public class MapGenerator : MonoBehaviour
 {
     void Start()
     {
-        map = new Map(width, height)
+        map = new ProceduralMap(width, height)
             .Fill(RandomFactory.Create(), randomFillPercent)
             .Smooth(smoothSteps, maxWallCount, neighbourOffset);
     }
@@ -36,7 +37,7 @@ public class MapGenerator : MonoBehaviour
 
     [SerializeField] [Range(0, 100)] int randomFillPercent;
 
-    Map map;
+    ProceduralMap map;
     
     #endregion
 

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Util
+namespace Util.Procedural
 {
     public static class Enumerables
     {
