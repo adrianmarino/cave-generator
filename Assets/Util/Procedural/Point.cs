@@ -4,7 +4,7 @@ namespace Util.Procedural
 {
     public class Point
     {
-        protected bool Equals(Point other)
+        private bool Equals(Point other)
         {
             return x == other.x && y == other.y;
         }
@@ -13,7 +13,7 @@ namespace Util.Procedural
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != this.GetType()) return false;
+            if (obj.GetType() != GetType()) return false;
             return Equals((Point) obj);
         }
 
@@ -27,7 +27,7 @@ namespace Util.Procedural
 
         public override string ToString()
         {
-            return String.Format("(x: {0}, y: {1})", X, Y);
+            return string.Format("(x: {0}, y: {1})", X, Y);
         }
 
         public int X

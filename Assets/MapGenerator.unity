@@ -140,9 +140,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f251313279af2422580b267a25c0495b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 128
-  height: 72
-  smoothSteps: 7
+  width: 150
+  height: 70
+  smoothSteps: 5
   maxWallCount: 4
   neighbourOffset: 1
   randomFillPercent: 45
@@ -211,7 +211,7 @@ Camera:
   far clip plane: 1000
   field of view: 80
   orthographic: 1
-  orthographic size: 40
+  orthographic size: 41.87
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

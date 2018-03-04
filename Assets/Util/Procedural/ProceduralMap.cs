@@ -18,12 +18,11 @@ namespace Util.Procedural
         {
             var map = Copy();
             for (var step = 0; step < steps; step++)
-                map.Where(cell => !map.IsEdge(cell))
-                    .ForEach(cell => {
+                map.Where(cell => !map.IsEdge(cell)).ForEach(cell => {
                     var wallCount = map.NeighboursOf(cell, neighbourOffset)
                         .Select(neighbour => neighbour.Value)
                         .Sum();
-                    
+
                     if(wallCount > maxWallCount)
                         cell.Value = 1;
                     else if (wallCount < maxWallCount)
@@ -32,9 +31,9 @@ namespace Util.Procedural
             return map;
         }
 
-        public List<Cell> NeighboursOf(Cell cell, int offset)
+        public IEnumerable<Cell> NeighboursOf(Cell cell, int offset)
         {
-            List<Cell> neighbours = new List<Cell>();
+            var neighbours = new List<Cell>();
             for (var neighbourX = cell.Point.X - offset; neighbourX <= cell.Point.X + offset; neighbourX++)
             {
                 for (var neighbourY = cell.Point.Y - offset; neighbourY <= cell.Point.Y + offset; neighbourY++)
@@ -47,7 +46,7 @@ namespace Util.Procedural
             }
             return neighbours;
         }
-        
+
         public bool Contains(Point point)
         {
             return point.X >= 0 && point.X < Width && point.Y >= 0 && point.Y < Height;
@@ -82,7 +81,6 @@ namespace Util.Procedural
         {
             get { return height; }
         }
-
 
         #endregion
         
@@ -145,9 +143,9 @@ namespace Util.Procedural
         
         int[,] map;
 
-        int width;
+        readonly int width;
 
-        int height;
+        readonly int height;
         
         #endregion
     }

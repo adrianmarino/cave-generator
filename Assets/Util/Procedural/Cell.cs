@@ -18,9 +18,9 @@
             get { return point; }
         }
 
-        private Point point;
+        private readonly Point point;
 
-        private ProceduralMap map;
+        private readonly ProceduralMap map;
 
         public Cell(ProceduralMap map, Point point)
         {
