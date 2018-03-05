@@ -20,9 +20,9 @@
 
         private readonly Point point;
 
-        private readonly ProceduralMap map;
+        private readonly CellMatrix map;
 
-        public Cell(ProceduralMap map, Point point)
+        public Cell(CellMatrix map, Point point)
         {
             this.point = point;
             this.map = map;

@@ -631,7 +631,7 @@ PlayerSettings:
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled: {}
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 2
+  apiCompatibilityLevel: 3
   cloudProjectId: 2dfe463a-18a0-4805-9e80-fd73870ede14
   projectName: CaveArena
   organizationId: adrianmarino

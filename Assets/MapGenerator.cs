@@ -6,21 +6,21 @@ public class MapGenerator : MonoBehaviour
 {
     void Start()
     {
-        map = new ProceduralMap(width, height)
+        var cellMatrix = new CellMatrix(width, height)
             .Fill(RandomFactory.Create(), randomFillPercent)
             .Smooth(smoothSteps, maxWallCount, neighbourOffset);
+
+        squares = new SquareEdgeNodeMatrix(cellMatrix, squadSide).AsSquareMatrix();
     }
 
     private void Update()
     {
-        if(Input.GetMouseButtonDown(0))
-            Start();
+        if(Input.GetMouseButtonDown(0)) Start();
     }
 
     private void OnDrawGizmos()
     {
-        if (map == null) return;
-        map.ForEach(point => GizmosUtil.DrawPoint(map, point));
+        if (squares != null) squares.ForEach(GizmosUtil.DrawSquare);
     }
 
     #region Attributes
@@ -35,9 +35,11 @@ public class MapGenerator : MonoBehaviour
         
     [SerializeField] int neighbourOffset;
 
+    [SerializeField] [Range(0, 10)] float squadSide;
+    
     [SerializeField] [Range(0, 100)] int randomFillPercent;
 
-    ProceduralMap map;
+    SquareMatrix squares;
     
     #endregion
 
@@ -49,5 +51,6 @@ public class MapGenerator : MonoBehaviour
         smoothSteps = 7;
         maxWallCount = 4;
         neighbourOffset = 1;
+        squadSide = 1;
     }
 }

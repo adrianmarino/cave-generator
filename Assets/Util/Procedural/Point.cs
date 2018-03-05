@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Util.Procedural
+﻿namespace Util.Procedural
 {
     public class Point
     {

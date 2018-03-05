@@ -140,11 +140,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f251313279af2422580b267a25c0495b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  width: 150
-  height: 70
+  width: 100
+  height: 50
   smoothSteps: 5
   maxWallCount: 4
   neighbourOffset: 1
+  squadSide: 1
   randomFillPercent: 45
 --- !u!4 &224279402
 Transform:
@@ -200,7 +201,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 0.09515571, g: 0.1839677, b: 0.32352942, a: 0}
   m_NormalizedViewPortRect:
     serializedVersion: 2
     x: 0
@@ -211,7 +212,7 @@ Camera:
   far clip plane: 1000
   field of view: 80
   orthographic: 1
-  orthographic size: 41.87
+  orthographic size: 28
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -224,7 +225,7 @@ Camera:
   m_AllowMSAA: 0
   m_AllowDynamicResolution: 0
   m_ForceIntoRT: 0
-  m_OcclusionCulling: 1
+  m_OcclusionCulling: 0
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
 --- !u!4 &1320422429
@@ -234,7 +235,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1320422425}
   m_LocalRotation: {x: 0.7071068, y: 0, z: 0, w: 0.7071068}
-  m_LocalPosition: {x: -0.1, y: 59.69, z: -0.38}
+  m_LocalPosition: {x: 0, y: 59.69, z: 24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}

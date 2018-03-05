@@ -3,12 +3,13 @@ using System.Collections.Generic;
 
 namespace Util.Procedural
 {
-    public static class Enumerables
+    public static class Extensions
     {
-        public static void ForEach<Cell>(this IEnumerable<Cell> @this, Action<Cell> action)
+        public static void ForEach<T>(this IEnumerable<T> source, Action<T> action)
         {
-            foreach (var cell in @this)
-                action(cell);
+            foreach (var element in source) 
+                action(element);
         }
     }
+
 }

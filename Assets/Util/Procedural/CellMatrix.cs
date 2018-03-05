@@ -2,19 +2,21 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
+using Random = System.Random;
 
 namespace Util.Procedural
-{
-    public class ProceduralMap: IEnumerable<Cell>, ICloneable
-    {        
-        public ProceduralMap Fill(Random random, int randomFillPercent)
+{   
+    public class CellMatrix: IEnumerable<Cell>, ICloneable
+    {
+        public CellMatrix Fill(Random random, int randomFillPercent)
         {
             var map = Copy();
             map.ForEach(cell => cell.Value = IsEdge(cell) ? 1 : GenerateValue(random, randomFillPercent));
             return map;
         }
 
-        public ProceduralMap Smooth(int steps, int maxWallCount, int neighbourOffset)
+        public CellMatrix Smooth(int steps, int maxWallCount, int neighbourOffset)
         {
             var map = Copy();
             for (var step = 0; step < steps; step++)
@@ -71,7 +73,12 @@ namespace Util.Procedural
                 return map ?? (map = new int[width, height]);
             }
         }
-        
+
+        public Vector3 BottomLeft
+        {
+            get { return new Vector3(-Width / 2, 0, -Height / 2); }
+        }
+
         public int Width
         {
             get { return width; }
@@ -94,18 +101,22 @@ namespace Util.Procedural
         public IEnumerator<Cell> GetEnumerator()
         {
             for (var x = 0; x < Width; x++)
+            {
                 for (var y = 0; y < Height; y++)
+                {
                     yield return new Cell(this, new Point(x, y));
+                }
+            }
         }
-        
-        public ProceduralMap Copy()
+
+        public CellMatrix Copy()
         {
-            return (ProceduralMap) Clone();
+            return (CellMatrix) Clone();
         }
         
         public object Clone()
         {
-            var clone = new ProceduralMap(width, height);
+            var clone = new CellMatrix(width, height);
             if (map == null) return clone;
 
             clone.ForEach(cell => cell.Value = Value(cell.Point));
@@ -131,7 +142,7 @@ namespace Util.Procedural
 
         #region Constructors
         
-        public ProceduralMap(int width, int height)
+        public CellMatrix(int width, int height)
         {
             this.width = width;
             this.height = height;
