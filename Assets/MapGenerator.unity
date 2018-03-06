@@ -125,7 +125,7 @@ GameObject:
   - component: {fileID: 224279404}
   - component: {fileID: 224279403}
   m_Layer: 0
-  m_Name: MapGenerator
+  m_Name: CaveGenerator
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -143,9 +143,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   step: 2
-  width: 100
-  height: 50
-  randomFillPercent: 45
+  width: 150
+  height: 70
+  randomFillPercent: 47
   smoothSteps: 5
   maxActiveNeighbors: 4
   neighboursRadio: 1
@@ -256,7 +256,7 @@ Camera:
   far clip plane: 1000
   field of view: 80
   orthographic: 1
-  orthographic size: 35
+  orthographic size: 60
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2

@@ -1,15 +1,16 @@
-﻿using UnityEditor;
-using UnityEngine;
+﻿using UnityEngine;
 using Util;
 using Util.Procedural;
 
 [HelpURL("https://en.wikipedia.org/wiki/Marching_squares")]
-public class MapGenerator : MonoBehaviour
+public class CaveGenerator : MonoBehaviour
 {
     private void Start()
     {
+        var random = RandomFactory.Create();
+        
         cells = new CellMatrix(width, height)
-            .Fill(RandomFactory.Create(), randomFillPercent)
+            .Fill(random, randomFillPercent)
             .Smooth(smoothSteps, maxActiveNeighbors, neighboursRadio);
 
         squares = SquareMatrixFactory.Create(cells, squadSide);
@@ -58,7 +59,7 @@ public class MapGenerator : MonoBehaviour
     [SerializeField] int height;
     
     [Space(10)]
-    [Header("Nodes Generation Phase")]
+    [Header("Cell Generation Phase")]
     
     [Tooltip("Set cell active(Value=1) when a random value is less than this.")]
     [SerializeField] [Range(0, 100)] int randomFillPercent;
@@ -78,10 +79,10 @@ public class MapGenerator : MonoBehaviour
     int neighboursRadio;
 
     [Space(10)]
-    [Header("Create Generation Phase")]
+    [Header("Square Generation Phase")]
 
     [Tooltip("Square size size. Used for 'Matching Squares Method'")]
-    
+
     [SerializeField] [Range(0, 10)]
     float squadSide;
     
@@ -92,7 +93,7 @@ public class MapGenerator : MonoBehaviour
 
     #endregion
 
-    public MapGenerator()
+    public CaveGenerator()
     {
         width = 100;
         height = 50;
