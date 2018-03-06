@@ -57,7 +57,7 @@ namespace Generator
         int height;
 
         [Space(10)]
-        [Header("Cell Generation Phase")]
+        [Header("Cells Generation Step")]
         [Tooltip("Set cell active(Value=1) when a random value is less than this.")]
         [SerializeField]
         [Range(0, 100)]
@@ -76,7 +76,7 @@ namespace Generator
         int neighboursRadio;
 
         [Space(10)]
-        [Header("Square Generation Phase")]
+        [Header("Squares Generation Step")]
         [Tooltip("Square size size. Used for 'Matching Squares Method'")]
         [SerializeField]
         [Range(0, 10)]
