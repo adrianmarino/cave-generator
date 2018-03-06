@@ -121,9 +121,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224279402}
-  - component: {fileID: 224279401}
   - component: {fileID: 224279404}
   - component: {fileID: 224279403}
+  - component: {fileID: 224279401}
   m_Layer: 0
   m_Name: CaveGenerator
   m_TagString: Untagged

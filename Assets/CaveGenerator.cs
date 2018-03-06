@@ -15,14 +15,21 @@ public class CaveGenerator : MonoBehaviour
 
         squares = SquareMatrixFactory.Create(cells, squadSide);
 
-        if (step == Step.Mesh)
-            ShowMesh(MeshFactory.Create(squares));
+        mesh = step == Step.Mesh ? MeshFactory.Create(squares) : new Mesh();
     }
 
     private void OnDrawGizmos()
     {
-        if(step == Step.Square) squares.ForEach(GizmosUtil.DrawSquare);
-        if(step == Step.Cell) cells.ForEach(cell => GizmosUtil.DrawCell(cells, cell));
+        if (step == Step.Square)
+        {
+            ShowMesh(new Mesh());
+            squares.ForEach(GizmosUtil.DrawSquare);
+        } else if (step == Step.Cell) {
+            ShowMesh(new Mesh());
+            cells.ForEach(cell => GizmosUtil.DrawCell(cells, cell));
+        }
+        else
+            ShowMesh(mesh);
     }
 
     private void Update()
@@ -90,6 +97,8 @@ public class CaveGenerator : MonoBehaviour
     private CellMatrix cells;
 
     private SquareMatrix squares;
+
+    private Mesh mesh;
 
     #endregion
 
