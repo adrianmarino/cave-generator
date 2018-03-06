@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Util.Procedural
+namespace Util
 {
     public static class Extensions
     {
@@ -11,5 +11,4 @@ namespace Util.Procedural
                 action(element);
         }
     }
-
 }

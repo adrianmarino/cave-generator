@@ -3,12 +3,7 @@
 namespace Util.Procedural
 {
     public class SquareEdgeNodeMatrix
-    {
-        public SquareMatrix AsSquareMatrix()
-        {
-            return new SquareMatrix(this);
-        }
-        
+    {        
         public SquareEdgeNode this[int x, int y]
         {
             get { return nodes[x, y]; }

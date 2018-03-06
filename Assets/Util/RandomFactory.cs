@@ -8,8 +8,8 @@ namespace Util
         {
             return new Random(CurrentMillis().GetHashCode());
         }
-        
-        static  double CurrentMillis()
+
+        private static  double CurrentMillis()
         {
             return (DateTime.Now - DateTime.MinValue).TotalMilliseconds;
         }

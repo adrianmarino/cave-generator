@@ -16,29 +16,34 @@ namespace Util.Procedural
             return map;
         }
 
-        public CellMatrix Smooth(int steps, int maxWallCount, int neighbourOffset)
+        public CellMatrix Smooth(int steps, int maxActiveNeighbors, int neighboursRadio)
         {
             var map = Copy();
-            for (var step = 0; step < steps; step++)
-                map.Where(cell => !map.IsEdge(cell)).ForEach(cell => {
-                    var wallCount = map.NeighboursOf(cell, neighbourOffset)
-                        .Select(neighbour => neighbour.Value)
-                        .Sum();
 
-                    if(wallCount > maxWallCount)
-                        cell.Value = 1;
-                    else if (wallCount < maxWallCount)
-                        cell.Value = 0;
-                });
+            for (var step = 0; step < steps; step++)
+                map.Where(cell => !map.IsEdge(cell))
+                    .ForEach(cell => {
+                        var activeNeighbors = map
+                            .NeighboursOf(cell, neighboursRadio)
+                            .Select(neighbour => neighbour.Value)
+                            .Sum();
+                        
+                        if(activeNeighbors > maxActiveNeighbors)
+                            cell.Value = 1;
+                        else if (activeNeighbors < maxActiveNeighbors)
+                            cell.Value = 0;
+                    });
+
             return map;
         }
 
-        public IEnumerable<Cell> NeighboursOf(Cell cell, int offset)
+        public IEnumerable<Cell> NeighboursOf(Cell cell, int squareRadio)
         {
             var neighbours = new List<Cell>();
-            for (var neighbourX = cell.Point.X - offset; neighbourX <= cell.Point.X + offset; neighbourX++)
+            
+            for (var neighbourX = cell.Point.X - squareRadio; neighbourX <= cell.Point.X + squareRadio; neighbourX++)
             {
-                for (var neighbourY = cell.Point.Y - offset; neighbourY <= cell.Point.Y + offset; neighbourY++)
+                for (var neighbourY = cell.Point.Y - squareRadio; neighbourY <= cell.Point.Y + squareRadio; neighbourY++)
                 {
                     var neighbourPoint = new Point(neighbourX, neighbourY);
 
