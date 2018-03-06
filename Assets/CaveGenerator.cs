@@ -29,7 +29,6 @@ namespace Generator
 
         private IOutput Generate()
         {
-            CleanMesh();
             var ctx = CreateStepContext();
             var pipeline = pipelineBuilder.Build(step);
             return pipeline.Perform(ctx);
