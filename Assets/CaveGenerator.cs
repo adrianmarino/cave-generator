@@ -8,14 +8,23 @@ namespace Generator
     [HelpURL("https://en.wikipedia.org/wiki/Marching_squares")]
     public class CaveGenerator : MonoBehaviour
     {
+        private void Start()
+        {
+            output = Generate();
+        }
+
         private void OnDrawGizmos()
         {
-            if(output != null) output.Render(this);
+            CleanMesh();
+     
+            if (output == null) return;
+            output.Render(this);
         }
 
         private void Update()
         {
-            if (Input.GetMouseButtonDown(0)) output = Generate();
+            if (!Input.GetMouseButtonDown(0)) return;  
+            output = Generate();
         }
 
         private IOutput Generate()
@@ -81,6 +90,7 @@ namespace Generator
 
         public CaveGenerator()
         {
+            output = null;
             step = GenerationStep.Cell;
             width = 120;
             height = 40;
