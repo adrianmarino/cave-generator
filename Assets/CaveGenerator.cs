@@ -82,8 +82,8 @@ namespace Generator
         public CaveGenerator()
         {
             step = GenerationStep.Cell;
-            width = 100;
-            height = 50;
+            width = 120;
+            height = 40;
             randomFillPercent = 45;
             smoothSteps = 5;
             maxActiveNeighbors = 4;
