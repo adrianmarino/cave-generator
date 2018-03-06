@@ -1,115 +1,95 @@
-﻿using UnityEngine;
-using Util;
-using Util.Procedural;
+﻿using Generator.Generator;
+using Generator.Output;
+using Generator.Step;
+using UnityEngine;
 
-[HelpURL("https://en.wikipedia.org/wiki/Marching_squares")]
-public class CaveGenerator : MonoBehaviour
+namespace Generator
 {
-    private void Start()
+    [HelpURL("https://en.wikipedia.org/wiki/Marching_squares")]
+    public class CaveGenerator : MonoBehaviour
     {
-        var random = RandomFactory.Create();
-        
-        cells = new CellMatrix(width, height)
-            .Fill(random, randomFillPercent)
-            .Smooth(smoothSteps, maxActiveNeighbors, neighboursRadio);
-
-        squares = SquareMatrixFactory.Create(cells, squadSide);
-
-        mesh = step == Step.Mesh ? MeshFactory.Create(squares) : new Mesh();
-    }
-
-    private void OnDrawGizmos()
-    {
-        if (step == Step.Square)
+        private void OnDrawGizmos()
         {
-            ShowMesh(new Mesh());
-            squares.ForEach(GizmosUtil.DrawSquare);
-        } else if (step == Step.Cell) {
-            ShowMesh(new Mesh());
-            cells.ForEach(cell => GizmosUtil.DrawCell(cells, cell));
+            if(output != null) output.Render(this);
         }
-        else
-            ShowMesh(mesh);
-    }
 
-    private void Update()
-    {
-        if(Input.GetMouseButtonDown(0))
-            Start();
-    }
+        private void Update()
+        {
+            if (Input.GetMouseButtonDown(0)) output = Generate();
+        }
 
-    private void ShowMesh(Mesh mesh)
-    {
-        GetComponent<MeshFilter>().mesh = mesh;
-    }
+        private IOutput Generate()
+        {
+            CleanMesh();
+            var ctx = CreateStepContext();
+            var pipeline = pipelineBuilder.Build(step);
+            return pipeline.Perform(ctx);
+        }
 
-    #region Attributes
-    
-    private enum Step
-    {
-        Cell,
-        Square,
-        Mesh
-    }
+        private void CleanMesh()
+        {
+            GetComponent<MeshFilter>().mesh = new Mesh();
+        }
 
-    [Header("Generation")]
-    
-    [Tooltip("Select the step of map construction.")]
-    [SerializeField] Step step;
+        private StepContext CreateStepContext()
+        {
+            return new StepContext(width, height, randomFillPercent, smoothSteps, maxActiveNeighbors, neighboursRadio, squadSide);
+        }
 
-    [Header("Size")]
-    
-    [Tooltip("Height of Map.")]
-    [SerializeField] int width;
+        #region Attributes
 
-    [Tooltip("Height of Map.")]
-    [SerializeField] int height;
-    
-    [Space(10)]
-    [Header("Cell Generation Phase")]
-    
-    [Tooltip("Set cell active(Value=1) when a random value is less than this.")]
-    [SerializeField] [Range(0, 100)] int randomFillPercent;
+        [Header("Generation")] [Tooltip("Select the step of map construction.")] [SerializeField]
+        GenerationStep step;
 
-    [Header("Smooth")]
+        [Header("Size")] [Tooltip("Height of Map.")] [SerializeField]
+        int width;
 
-    [Tooltip("Times that execute Smooth map filter.")]
-    [SerializeField]
-    int smoothSteps;
+        [Tooltip("Height of Map.")] [SerializeField]
+        int height;
 
-    [Tooltip("Max number of active neighbors cells. Used to set current cell as active(cell.Value=1) when reach max or inactive(cell.Value=0) when do not.")]
-    [SerializeField]
-    int maxActiveNeighbors;
+        [Space(10)]
+        [Header("Cell Generation Phase")]
+        [Tooltip("Set cell active(Value=1) when a random value is less than this.")]
+        [SerializeField]
+        [Range(0, 100)]
+        int randomFillPercent;
 
-    [Tooltip("Radial cells count from curent cell. Used to determine MaxActiveNeighbors of a cell.")]
-    [SerializeField]
-    int neighboursRadio;
+        [Header("Smooth")] [Tooltip("Times that execute Smooth map filter.")] [SerializeField]
+        int smoothSteps;
 
-    [Space(10)]
-    [Header("Square Generation Phase")]
+        [Tooltip(
+            "Max number of active neighbors cells. Used to set current cell as active(cell.Value=1) when reach max or inactive(cell.Value=0) when do not.")]
+        [SerializeField]
+        int maxActiveNeighbors;
 
-    [Tooltip("Square size size. Used for 'Matching Squares Method'")]
+        [Tooltip("Radial cells count from curent cell. Used to determine MaxActiveNeighbors of a cell.")]
+        [SerializeField]
+        int neighboursRadio;
 
-    [SerializeField] [Range(0, 10)]
-    float squadSide;
-    
-    
-    private CellMatrix cells;
+        [Space(10)]
+        [Header("Square Generation Phase")]
+        [Tooltip("Square size size. Used for 'Matching Squares Method'")]
+        [SerializeField]
+        [Range(0, 10)]
+        float squadSide;
 
-    private SquareMatrix squares;
+        IOutput output;
+        
+        readonly GenerationPipelineBuilder pipelineBuilder;
+        
+        #endregion
 
-    private Mesh mesh;
-
-    #endregion
-
-    public CaveGenerator()
-    {
-        width = 100;
-        height = 50;
-        randomFillPercent = 45;
-        smoothSteps = 5;
-        maxActiveNeighbors = 4;
-        neighboursRadio = 1;
-        squadSide = 1;
+        public CaveGenerator()
+        {
+            step = GenerationStep.Cell;
+            width = 100;
+            height = 50;
+            randomFillPercent = 45;
+            smoothSteps = 5;
+            maxActiveNeighbors = 4;
+            neighboursRadio = 1;
+            squadSide = 1;
+            pipelineBuilder = new GenerationPipelineBuilder();
+        }
     }
 }
