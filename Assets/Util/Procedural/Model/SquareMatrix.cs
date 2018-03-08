@@ -5,7 +5,7 @@ using System.Collections.Generic;
 namespace Util.Procedural
 {
     public class SquareMatrix: IEnumerable<Square>
-    {
+    {       
         IEnumerator IEnumerable.GetEnumerator()
         {
             return GetEnumerator();

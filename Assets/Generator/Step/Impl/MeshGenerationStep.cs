@@ -9,8 +9,9 @@ namespace Generator.Step.Impl
     {
         public IOutput Perform(StepContext ctx, object input)
         {
-            var mesh = MeshFactory.Create((SquareMatrix)input);
-            return new MeshOutput(mesh);
+            var mapMesh = new MapMesh((SquareMatrix) input);
+            var unityMesh = mapMesh.asMesh();
+            return new MeshOutput(unityMesh);
         }
     }
 }

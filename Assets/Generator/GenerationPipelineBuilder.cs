@@ -15,9 +15,9 @@ namespace Generator.Generator
 
             return new GenerationPipeline(steps);
         }
-    
+
         readonly IDictionary<GenerationStep, IGenerationStep> generators;
-    
+
         public GenerationPipelineBuilder() {
             generators = new Dictionary<GenerationStep, IGenerationStep>();
             generators[ GenerationStep.Cell] = new CellGenerationStep();

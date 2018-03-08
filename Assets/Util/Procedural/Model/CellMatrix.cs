@@ -11,20 +11,17 @@ namespace Util.Procedural
     {
         public CellMatrix Fill(Random random, int randomFillPercent)
         {
-            var map = Copy();
-            map.ForEach(cell => cell.Value = IsEdge(cell) ? 1 : GenerateValue(random, randomFillPercent));
-            return map;
+            this.ForEach(cell => cell.Value = IsEdge(cell) ? 1 : GenerateValue(random, randomFillPercent));
+            return this;
         }
 
         public CellMatrix Smooth(int steps, int maxActiveNeighbors, int neighboursRadio)
         {
-            var map = Copy();
-
             for (var step = 0; step < steps; step++)
-                map.Where(cell => !map.IsEdge(cell))
+                this.Where(cell => !this.IsEdge(cell))
                     .ForEach(cell => {
-                        var activeNeighbors = map
-                            .NeighboursOf(cell, neighboursRadio)
+                        var activeNeighbors = 
+                            NeighboursOf(cell, neighboursRadio)
                             .Select(neighbour => neighbour.Value)
                             .Sum();
                         
@@ -33,8 +30,7 @@ namespace Util.Procedural
                         else if (activeNeighbors < maxActiveNeighbors)
                             cell.Value = 0;
                     });
-
-            return map;
+            return this;
         }
 
         public IEnumerable<Cell> NeighboursOf(Cell cell, int squareRadio)
@@ -71,7 +67,7 @@ namespace Util.Procedural
 
         #region Properties
 
-        int[,] Positions
+        private int[,] Positions
         {
             get
             {
