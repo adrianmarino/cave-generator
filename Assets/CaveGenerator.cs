@@ -10,33 +10,28 @@ namespace Generator
     {
         private void Start()
         {
-            output = Generate();
+            Generate();
         }
 
         private void OnDrawGizmos()
         {
-            CleanMesh();
-     
-            if (output == null) return;
-            output.Render(this);
+            var renderer = rendererResolver.resolve(output);
+            renderer.Render(this, output);
         }
 
         private void Update()
         {
             if (!Input.GetMouseButtonDown(0)) return;  
-            output = Generate();
+            Generate();
         }
 
-        private IOutput Generate()
+        private void Generate()
         {
             var ctx = CreateStepContext();
             var pipeline = pipelineBuilder.Build(step);
-            return pipeline.Perform(ctx);
-        }
 
-        private void CleanMesh()
-        {
-            GetComponent<MeshFilter>().mesh = new Mesh();
+            var data = pipeline.Perform(ctx);
+            output = data;
         }
 
         private StepContext CreateStepContext()
@@ -81,7 +76,9 @@ namespace Generator
         [Range(0, 10)]
         float squadSide;
 
-        IOutput output;
+        object output;
+
+        readonly RendererResolver rendererResolver;
         
         readonly GenerationPipelineBuilder pipelineBuilder;
         
@@ -90,7 +87,7 @@ namespace Generator
         public CaveGenerator()
         {
             output = null;
-            step = GenerationStep.Cell;
+            step = GenerationStep.Cells;
             width = 120;
             height = 40;
             randomFillPercent = 45;
@@ -98,6 +95,7 @@ namespace Generator
             maxActiveNeighbors = 4;
             neighboursRadio = 1;
             squadSide = 1;
+            rendererResolver = new RendererResolver();
             pipelineBuilder = new GenerationPipelineBuilder();
         }
     }

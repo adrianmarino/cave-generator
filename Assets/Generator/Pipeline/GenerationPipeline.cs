@@ -7,22 +7,21 @@ namespace Generator.Generator
 {
     public class GenerationPipeline
     {
-        public IOutput Perform(StepContext ctx)
+        public object Perform(StepContext ctx)
         {
             return Perform(ctx, null);
         }
 
-        public IOutput Perform(StepContext ctx, object initialInput)
+        public object Perform(StepContext ctx, object initialInput)
         {
             var input = initialInput;
-            IOutput output = null;
+            object output = null;
 
             foreach (var step in steps)
             {
                 output = step.Perform(ctx, input);
-                input = output.Data;
+                input = output;
             }
-
             return output;
         }
         

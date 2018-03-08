@@ -14,8 +14,9 @@ namespace Generator.Step
     
     public enum GenerationStep
     {
-        Cell = 0,
-        Square = 1,
-        Mesh = 2
+        Cells = 0,
+        Squares = 1,
+        Mesh = 2,
+        Walls = 3
     }
 }

@@ -20,9 +20,10 @@ namespace Generator.Generator
 
         public GenerationPipelineBuilder() {
             generators = new Dictionary<GenerationStep, IGenerationStep>();
-            generators[ GenerationStep.Cell] = new CellGenerationStep();
-            generators[ GenerationStep.Square] = new SquaresGenerationStep();
+            generators[ GenerationStep.Cells] = new CellsGenerationStep();
+            generators[ GenerationStep.Squares] = new SquaresGenerationStep();
             generators[ GenerationStep.Mesh] = new MeshGenerationStep();
+            generators[ GenerationStep.Walls] = new WallsGenerationStep();
         }
-    }        
+    }
 }

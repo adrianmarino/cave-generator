@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Util.Procedural
@@ -16,11 +17,11 @@ namespace Util.Procedural
             return mesh;
         }
 
-        private readonly List<SquareMesh> squares;
+        private readonly IList<SquareMesh> squares;
 
-        private readonly List<Vector3> vertexPositions;
+        private readonly IList<Vector3> vertexPositions;
 
-        private readonly List<int> triangleIndexes;
+        private readonly IList<int> triangleIndexes;
 
         public MapMesh(SquareMatrix squareMatrix)
         {
@@ -32,8 +33,8 @@ namespace Util.Procedural
             foreach (var square in squareMatrix)
             {
                 var squareMesh = new SquareMeshFactory(vertexIndex).Create(square);
-                vertexPositions.AddRange(squareMesh.VertexPositions);
-                triangleIndexes.AddRange(squareMesh.TriangleIndexes);
+                squareMesh.VertexPositions.ForEach(it => vertexPositions.Add(it));
+                squareMesh.TriangleIndexes.ForEach(it => triangleIndexes.Add(it));
                 squares.Add(squareMesh);
             }
         }
