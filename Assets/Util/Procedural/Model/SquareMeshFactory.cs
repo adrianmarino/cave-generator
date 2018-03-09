@@ -116,7 +116,7 @@ namespace Util.Procedural
                 ));
             }
 
-            return new SquareMesh(triangles.ToArray());
+            return new SquareMesh(triangles);
         }
 
         private Vertex GetVertex(

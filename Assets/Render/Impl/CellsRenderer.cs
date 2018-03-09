@@ -1,21 +1,26 @@
 ﻿using Generator.Generator;
-using UnityEngine;
 using Util;
 using Util.Procedural;
 
 namespace Generator.Output.Impl
 {
-    public class CellsRenderer : IRenderer
+    public class CellsRenderer : Renderer
     {
-        public void Render(MonoBehaviour behaviour, object data)
+        public override bool CanRender(RenderContext ctx)
         {
-            var cellMatrix = (CellMatrix) data;
+            return ctx.DataIs(typeof(CellMatrix));
+        }
+
+        protected override void OnDrawGizmos(RenderContext ctx)
+        {
+            Initialize(ctx);
+            var cellMatrix = (CellMatrix) ctx.Data;
             cellMatrix.ForEach(cell => GizmosUtil.DrawCell(cellMatrix, cell));
         }
 
-        public bool CanRender(object data)
+        private static void Initialize(RenderContext ctx)
         {
-            return typeof(CellMatrix) == data.GetType();
+            CameraSettings.TwoDimnesion(ctx.Parent.Camera);
         }
     }
 }

@@ -4,16 +4,17 @@ using Generator.Output.Impl;
 
 namespace Generator.Generator
 {
-    public class RendererResolver
+    public class RendererService
     {
-        public IRenderer resolve(object data)
+        public void Render(RenderContext ctx)
         {
-            return renderers.First(it => it.CanRender(data));
+            var renderer = renderers.First(it => it.CanRender(ctx));
+            if(renderer != null) renderer.Render(ctx);
         }
 
         readonly IList<IRenderer> renderers;
 
-        public RendererResolver()
+        public RendererService()
         {
             renderers = new List<IRenderer>
             {

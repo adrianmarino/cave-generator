@@ -1,7 +1,9 @@
-﻿using Generator.Generator;
-using Generator.Output;
+﻿using System.Linq;
+using Generator.Generator;
 using Generator.Step;
 using UnityEngine;
+using Util;
+using Util.Procedural;
 
 namespace Generator
 {
@@ -15,35 +17,82 @@ namespace Generator
 
         private void OnDrawGizmos()
         {
-            var renderer = rendererResolver.resolve(output);
-            renderer.Render(this, output);
+            Render(RenderEvent.OnDrawGizmos);
         }
 
         private void Update()
         {
-            if (!Input.GetMouseButtonDown(0)) return;  
+            if (!Input.GetMouseButtonDown(0)) return;
+
             Generate();
+            Render(RenderEvent.Update);
         }
 
         private void Generate()
         {
+            CleanView();
             var ctx = CreateStepContext();
             var pipeline = pipelineBuilder.Build(step);
-
-            var data = pipeline.Perform(ctx);
-            output = data;
+            output = pipeline.Perform(ctx);
+        }
+        
+        private void Render(RenderEvent renderEvent)
+        {
+            var ctx = new RenderContext(renderEvent, output, this);
+            rendererService.Render(ctx);
         }
 
         private StepContext CreateStepContext()
         {
-            return new StepContext(width, height, randomFillPercent, smoothSteps, maxActiveNeighbors, neighboursRadio, squadSide);
+            return new StepContext(
+                width, 
+                height, 
+                randomFillPercent, 
+                smoothSteps, 
+                maxActiveNeighbors, 
+                neighboursRadio, 
+                squadSide
+            );
         }
 
+        public void CleanView()
+        {
+            MeshFilters.ForEach(it => it.mesh.Clear());
+        }
+
+        #region Properties
+        
+        public MeshFilter[] MeshFilters
+        {
+            get
+            {
+                return new [] {GetComponent<MeshFilter>(), wallsMeshFilter}.Where(it => it != null).ToArray();
+            }
+        }
+        
+        public Camera Camera
+        {
+            get
+            {
+                return sceneCamera; 
+            }
+        }
+
+        #endregion
+        
         #region Attributes
 
         [Header("Generation")] [Tooltip("Select the step of map construction.")] [SerializeField]
         GenerationStep step;
+        
+        [Tooltip("Scene Camera")]
+        [SerializeField]
+        Camera sceneCamera;
 
+        [Tooltip("Mesh filter of Walls inner object.")]
+        [SerializeField]
+        MeshFilter wallsMeshFilter;
+        
         [Header("Size")] [Tooltip("Height of Map.")] [SerializeField]
         int width;
 
@@ -75,10 +124,10 @@ namespace Generator
         [SerializeField]
         [Range(0, 10)]
         float squadSide;
-
+        
         object output;
 
-        readonly RendererResolver rendererResolver;
+        readonly RendererService rendererService;
         
         readonly GenerationPipelineBuilder pipelineBuilder;
         
@@ -87,6 +136,8 @@ namespace Generator
         public CaveGenerator()
         {
             output = null;
+            sceneCamera = null;
+            wallsMeshFilter = null;
             step = GenerationStep.Cells;
             width = 120;
             height = 40;
@@ -95,7 +146,7 @@ namespace Generator
             maxActiveNeighbors = 4;
             neighboursRadio = 1;
             squadSide = 1;
-            rendererResolver = new RendererResolver();
+            rendererService = new RendererService();
             pipelineBuilder = new GenerationPipelineBuilder();
         }
     }

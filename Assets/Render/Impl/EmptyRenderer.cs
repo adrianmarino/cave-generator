@@ -1,18 +1,18 @@
 ﻿using Generator.Generator;
-using UnityEngine;
 
 namespace Generator.Output.Impl
 {
-    public class EmptyRenderer: IRenderer
-    {
-        public void Render(MonoBehaviour behaviour, object data)
+    public class EmptyRenderer: Renderer
+    {        
+        public override bool CanRender(RenderContext ctx)
         {
-            behaviour.GetComponent<MeshFilter>().mesh = new Mesh();
+            return ctx.Data == null;
         }
 
-        public bool CanRender(object data)
+        protected override void Update(RenderContext ctx)
         {
-            return data == null;
+            CameraSettings.TwoDimnesion(ctx.Parent.Camera);
+            ctx.Parent.CleanView();
         }
     }
 }

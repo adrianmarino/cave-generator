@@ -1,21 +1,26 @@
 ﻿using Generator.Generator;
-using UnityEngine;
 using Util;
 using Util.Procedural;
 
 namespace Generator.Output.Impl
 {
-    public class SquaresRenderer: IRenderer
-    {
-        public void Render(MonoBehaviour behaviour, object data)
+    public class SquaresRenderer: Renderer
+    {        
+        public override bool CanRender(RenderContext ctx)
         {
-            var squareMatrix = (SquareMatrix) data;
+            return ctx.DataIs(typeof(SquareMatrix));
+        }
+
+        protected override void OnDrawGizmos(RenderContext ctx)
+        {
+            initialize(ctx);
+            var squareMatrix = (SquareMatrix) ctx.Data;
             squareMatrix.ForEach(GizmosUtil.DrawSquare);
         }
 
-        public bool CanRender(object data)
+        private static void initialize(RenderContext ctx)
         {
-            return typeof(SquareMatrix) == data.GetType();
+            CameraSettings.TwoDimnesion(ctx.Parent.Camera);
         }
     }
 }

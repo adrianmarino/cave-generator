@@ -1,11 +1,9 @@
-﻿using UnityEngine;
-
-namespace Generator.Generator
+﻿namespace Generator.Generator
 {
     public interface IRenderer
     {
-        void Render(MonoBehaviour behaviour, object data);
+        void Render(RenderContext ctx);
 
-        bool CanRender(object data);
+        bool CanRender(RenderContext context);
     }
 }
