@@ -6,9 +6,9 @@ namespace Generator.Step.Impl
     {
         public object Perform(StepContext ctx, object input)
         {
-            var squares =GetInput(input);
-            var mesh = new MapMesh(squares);
-            return new IMesh[] {mesh};
+            var squares = GetInput(input);
+            var mapMesh = MapMeshFactory.Create(squares);
+            return new[] {mapMesh};
         }
 
         private static SquareMatrix GetInput(object input)

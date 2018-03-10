@@ -1,9 +1,11 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
 
 namespace Util.Procedural
 {
     public interface IMesh
     {
-        Mesh asMesh();
+        UnityEngine.Mesh asUnityMesh();
+
+        IList<Triangle> Triangles { get; }
     }
 }

@@ -8,14 +8,18 @@ namespace Generator.Step.Impl
         {
             
             var mapMesh = GetInput(data);
-            var wallsMesh = new WallsMesh(mapMesh.OutlineEdges, wallHeight);
-            return new IMesh[] {mapMesh, wallsMesh};
+
+            var edges = OutlineEdgeFactory.extarctFrom(mapMesh);
+
+            var wallMesh = WallMeshFactory.Create(edges, wallHeight);
+            
+            return new[] {mapMesh, wallMesh};
         }
 
-        private static MapMesh GetInput(object data)
+        private static IMesh GetInput(object data)
         {
             var meshes = (IMesh[]) data;
-            return (MapMesh)meshes[0];
+            return meshes[0];
         }
 
         const int wallHeight = 5;

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Generator.Generator;
+﻿using Generator.Generator;
 using UnityEngine;
 using Util;
 using Util.Procedural;
@@ -24,16 +23,16 @@ namespace Generator.Output.Impl
                 var mesh = meshes[index];
                 var filter = ctx.Parent.MeshFilters[index];
                 
-                Debug.LogFormat("Render {0} to {1} filter", mesh.GetType(), filter);
+                // Debug.LogFormat("Render {0} to {1} filter", mesh.GetType(), filter);
 
-                filter.mesh = mesh.asMesh();
+                filter.mesh = mesh.asUnityMesh();
             }
         }
 
         private static void Initialize(RenderContext ctx)
         {
             CameraSettings.ThreeDimnesion(ctx.Parent.Camera);
-            ctx.Parent.MeshFilters.ForEach(it => it.transform.localPosition = new Vector3(0, 2.5f, 0.5f));
+            ctx.Parent.MeshFilters.ForEach(it => it.transform.position = new Vector3(0, 5, 0.5f));
         }
 
         private static IMesh[] GetInput(RenderContext ctx)

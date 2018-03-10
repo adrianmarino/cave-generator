@@ -142,12 +142,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f251313279af2422580b267a25c0495b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  step: 0
+  step: 3
   sceneCamera: {fileID: 1320422428}
   wallsMeshFilter: {fileID: 1782689257}
-  width: 120
+  width: 70
   height: 40
-  randomFillPercent: 47
+  randomFillPercent: 45
   smoothSteps: 5
   maxActiveNeighbors: 4
   neighboursRadio: 1
@@ -159,7 +159,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 224279400}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -6.7291946, y: 0.1669626, z: -6.066139}
+  m_LocalPosition: {x: -6.7291946, y: 5, z: -6.066139}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 1782689255}
