@@ -3,9 +3,9 @@ using System.Linq;
 
 namespace Util.Procedural
 {
-    public static class OutlineEdgeFactory
+    public class FullScanStrategy: IOutlineEdgeFactory
     {
-        public static IList<Edge> extarctFrom(IMesh mesh)
+        public IList<Edge> build(IMesh mesh)
         {
             var vertices = TriangleUtil.VerticesFrom(mesh.Triangles.Where(it => !it.Inner)).Distinct();
 

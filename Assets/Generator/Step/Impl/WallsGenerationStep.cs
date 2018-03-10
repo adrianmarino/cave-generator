@@ -9,7 +9,7 @@ namespace Generator.Step.Impl
             
             var mapMesh = GetInput(data);
 
-            var edges = OutlineEdgeFactory.extarctFrom(mapMesh);
+            var edges = OutlineEdgesBuilder.build(mapMesh);
 
             var wallMesh = WallMeshFactory.Create(edges, wallHeight);
             
