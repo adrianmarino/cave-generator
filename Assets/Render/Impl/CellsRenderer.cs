@@ -1,8 +1,7 @@
-﻿using Generator.Generator;
-using Util;
-using Util.Procedural;
+﻿using Util;
+using Procedural.Model;
 
-namespace Generator.Output.Impl
+namespace Render
 {
     public class CellsRenderer : Renderer
     {

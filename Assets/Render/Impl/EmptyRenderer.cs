@@ -1,6 +1,4 @@
-﻿using Generator.Generator;
-
-namespace Generator.Output.Impl
+﻿namespace Render
 {
     public class EmptyRenderer: Renderer
     {        

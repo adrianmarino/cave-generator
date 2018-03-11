@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Generator.Output.Impl;
+using Procedural.Generator.Output.Impl;
 
-namespace Generator.Generator
+namespace Render
 {
     public class RendererService
     {

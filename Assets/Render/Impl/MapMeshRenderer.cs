@@ -1,11 +1,8 @@
-﻿using Generator.Generator;
-using Generator.Step;
+﻿using Procedural.Generator.Pipeline;
 using UnityEngine;
-using Util;
-using Util.Procedural;
-using Renderer = Generator.Generator.Renderer;
+using Procedural.Model;
 
-namespace Generator.Output.Impl
+namespace Render
 {
     public class MapMeshRenderer: Renderer
     {

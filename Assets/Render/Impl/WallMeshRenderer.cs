@@ -1,11 +1,9 @@
-﻿using Generator.Generator;
-using Generator.Step;
+﻿using Procedural.Generator.Pipeline;
 using UnityEngine;
+using Procedural.Model;
 using Util;
-using Util.Procedural;
-using Renderer = Generator.Generator.Renderer;
 
-namespace Generator.Output.Impl
+namespace Render
 {
     public class WallsMeshRenderer: Renderer
     {

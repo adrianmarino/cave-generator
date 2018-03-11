@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-namespace Generator.Generator
+namespace Render
 {
     public static class CameraSettings
     {

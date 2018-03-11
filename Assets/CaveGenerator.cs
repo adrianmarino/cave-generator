@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Generator.Generator;
-using Generator.Step;
+using Procedural.Generator.Pipeline;
+using Render;
+using Procedural.Generator.Step;
 using UnityEngine;
 using Util;
-using Util.Procedural;
+using Procedural.Model;
 
 namespace Generator
 {
@@ -73,7 +74,7 @@ namespace Generator
         {
             get
             {
-                return new [] {GetComponent<MeshFilter>(), wallsMeshFilter}.Where(it => it != null).ToArray();
+                return new [] {GetComponent<MeshFilter>(), wallsMeshFilter}.WhereNotNull().ToArray();
             }
         }
         

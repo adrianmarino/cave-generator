@@ -1,8 +1,8 @@
-﻿using Generator.Generator;
+﻿using Render;
 using Util;
-using Util.Procedural;
+using Procedural.Model;
 
-namespace Generator.Output.Impl
+namespace Procedural.Generator.Output.Impl
 {
     public class SquaresRenderer: Renderer
     {        

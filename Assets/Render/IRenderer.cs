@@ -1,4 +1,4 @@
-﻿namespace Generator.Generator
+﻿namespace Render
 {
     public interface IRenderer
     {

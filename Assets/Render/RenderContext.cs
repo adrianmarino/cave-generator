@@ -1,6 +1,7 @@
 ﻿using System;
+using Generator;
 
-namespace Generator.Generator
+namespace Render
 {
     public class RenderContext
     {

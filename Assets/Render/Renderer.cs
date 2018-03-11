@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Generator.Generator
+namespace Render
 {
     public abstract class Renderer : IRenderer
     {        
