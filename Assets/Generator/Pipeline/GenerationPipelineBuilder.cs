@@ -22,7 +22,7 @@ namespace Generator.Generator
             generators = new Dictionary<GenerationStep, IGenerationStep>();
             generators[ GenerationStep.Cells] = new CellsGenerationStep();
             generators[ GenerationStep.Squares] = new SquaresGenerationStep();
-            generators[ GenerationStep.Mesh] = new MeshGenerationStep();
+            generators[ GenerationStep.Map] = new MeshGenerationStep();
             generators[ GenerationStep.Walls] = new WallsGenerationStep();
         }
     }

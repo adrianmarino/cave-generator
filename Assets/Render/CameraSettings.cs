@@ -6,7 +6,7 @@ namespace Generator.Generator
     {
         public static void TwoDimnesion(Camera camera)
         {
-            camera.transform.position = new Vector3(-0.6f, 58.88f, 19.4f);
+            camera.transform.position = new Vector3(-0.6f, 58.88f, 24f);
             camera.transform.rotation = Quaternion.Euler(90f, 0f, 0f);
             camera.orthographic = true;
         }  

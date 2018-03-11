@@ -16,7 +16,7 @@ namespace Generator.Step
     {
         Cells = 0,
         Squares = 1,
-        Mesh = 2,
+        Map = 2,
         Walls = 3
     }
 }

@@ -1,8 +1,10 @@
-﻿using System.Linq;
+﻿using System.Collections.Generic;
+using System.Linq;
 using Generator.Generator;
 using Generator.Step;
 using UnityEngine;
 using Util;
+using Util.Procedural;
 
 namespace Generator
 {
@@ -59,6 +61,12 @@ namespace Generator
             MeshFilters.ForEach(it => it.mesh.Clear());
         }
 
+        public void Show(IList<IMesh> meshes)
+        {
+            for (var index = 0; index < meshes.Count; index++)
+                MeshFilters[index].mesh = meshes[index].asUnityMesh();
+        }
+        
         #region Properties
         
         public MeshFilter[] MeshFilters
@@ -77,6 +85,11 @@ namespace Generator
             }
         }
 
+        public GenerationStep Step
+        {
+            get { return step; }
+        }
+
         #endregion
         
         #region Attributes
@@ -88,7 +101,7 @@ namespace Generator
         [SerializeField]
         Camera sceneCamera;
 
-        [Tooltip("Mesh filter of Walls inner object.")]
+        [Tooltip("Map filter of Walls inner object.")]
         [SerializeField]
         MeshFilter wallsMeshFilter;
         

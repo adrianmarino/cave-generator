@@ -21,7 +21,8 @@ namespace Generator.Generator
                 new EmptyRenderer(),
                 new CellsRenderer(),
                 new SquaresRenderer(),
-                new MeshRenderer()
+                new MapMeshRenderer(),
+                new WallsMeshRenderer()
             };
         }
     }

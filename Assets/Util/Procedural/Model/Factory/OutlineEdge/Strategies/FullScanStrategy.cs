@@ -7,9 +7,15 @@ namespace Util.Procedural
     {
         public IList<Edge> build(IMesh mesh)
         {
-            var vertices = TriangleUtil.VerticesFrom(mesh.Triangles.Where(it => !it.Inner)).Distinct();
+            var vertices = mesh.Triangles.NonInner().DistinctVertices();
 
-            return (from vertex1 in vertices from vertex2 in vertices where !vertex1.Equals(vertex2) where vertex1.makeUpOutlineEdge(vertex2) select new Edge(vertex1, vertex2)).ToList();
+            return (
+                from vertex1 in vertices 
+                from vertex2 in vertices
+                where !vertex1.Equals(vertex2)
+                where vertex1.makeUpOutlineEdge(vertex2) 
+                select new Edge(vertex1, vertex2)
+             ).ToList();
         }
     }
 }

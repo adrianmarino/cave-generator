@@ -2,60 +2,37 @@
 {
     public class StepContext
     {
-        public int Width
-        {
-            get { return width; }
-        }
+        public int Height { get; private set; }
 
-        public int Height
-        {
-            get { return height; }
-        }
+        public int Width { get; private set; }
+        
+        public int NeighboursRadio { get; set; }
 
-        public int RandomFillPercent
-        {
-            get { return randomFillPercent; }
-        }
+        public float SquadSide { get; set; }
 
-        public int SmoothSteps
-        {
-            get { return smoothSteps; }
-        }
+        public int MaxActiveNeighbors { get; set; }
 
-        public int MaxActiveNeighbors
-        {
-            get { return maxActiveNeighbors; }
-        }
+        public int SmoothSteps { get; set; }
 
-        public int NeighboursRadio
-        {
-            get { return neighboursRadio; }
-        }
-
-        public float SquadSide
-        {
-            get { return squadSide; }
-        }
-
-        readonly int width;
-        readonly int height;
-        readonly int randomFillPercent;
-        readonly int smoothSteps;
-        readonly int maxActiveNeighbors;
-        readonly int neighboursRadio;
-        readonly float squadSide;
+        public int RandomFillPercent { get; set; }
 
         public StepContext(
-            int width, int height, int randomFillPercent, int smoothSteps, 
-            int maxActiveNeighbors, int neighboursRadio, float squadSide)
+            int width, 
+            int height, 
+            int randomFillPercent, 
+            int smoothSteps,
+            int maxActiveNeighbors, 
+            int neighboursRadio, 
+            float squadSide
+        )
         {
-            this.width = width;
-            this.height = height;
-            this.randomFillPercent = randomFillPercent;
-            this.smoothSteps = smoothSteps;
-            this.maxActiveNeighbors = maxActiveNeighbors;
-            this.neighboursRadio = neighboursRadio;
-            this.squadSide = squadSide;
+            Width = width;
+            Height = height;
+            RandomFillPercent = randomFillPercent;
+            SmoothSteps = smoothSteps;
+            MaxActiveNeighbors = maxActiveNeighbors;
+            NeighboursRadio = neighboursRadio;
+            SquadSide = squadSide;
         }
     }
 }
