@@ -9,9 +9,9 @@ namespace Procedural.Model
     {
         public override string ToString()
         {
-            return string.Format("Vertices: {0}", StringUtil.ToString(Vertices));
+            return string.Format("{ Vertices: [{0}] }", StringUtil.ToString(Vertices));
         }
-        
+
         public bool Contains(Vertex vertex)
         {
             return Vertices.Contains(vertex);

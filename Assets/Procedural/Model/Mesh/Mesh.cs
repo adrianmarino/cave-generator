@@ -5,7 +5,12 @@ using UnityEngine;
 namespace Procedural.Model
 {
     public class Mesh: IMesh
-    {        
+    {
+        public override string ToString()
+        {
+            return string.Format("Mesh: {0}", JsonUtility.ToJson(Triangles));
+        }
+
         public UnityEngine.Mesh asUnityMesh()
         {
             return UnityMeshFactory.Create(this);
