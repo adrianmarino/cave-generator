@@ -142,12 +142,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f251313279af2422580b267a25c0495b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  step: 0
+  step: 3
   sceneCamera: {fileID: 1320422428}
-  sceneCameraTransform: {fileID: 1320422429}
   wallsMeshFilter: {fileID: 1782689257}
   width: 90
-  height: 50
+  height: 40
   randomFillPercent: 45
   smoothSteps: 5
   maxActiveNeighbors: 4

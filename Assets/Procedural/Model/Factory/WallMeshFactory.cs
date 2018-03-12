@@ -6,7 +6,7 @@ namespace Procedural.Model
 {
     public static class WallMeshFactory
     {
-        public static IMesh Create(IList<Edge> edges, float height)
+        public static IMesh Create(IEnumerable<Edge> edges, float height)
         {
             var sequence = new IndexSequence(0);
             var meshes = edges.Select(edge => Create(edge, height, sequence)).ToList();

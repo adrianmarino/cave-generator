@@ -4,7 +4,7 @@ namespace Procedural.Model
 {
     public static class OutlineEdgesBuilder
     {
-        public static IList<Edge> build(IMesh mesh)
+        public static IEnumerable<Edge> build(IMesh mesh)
         {
             return new FullScanStrategy().build(mesh);
         }

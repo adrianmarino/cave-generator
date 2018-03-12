@@ -5,6 +5,6 @@ namespace Procedural.Model
 {
     public interface IOutlineEdgeFactory
     {
-        IList<Edge> build(IMesh mesh);
+        IEnumerable<Edge> build(IMesh mesh);
     }
 }

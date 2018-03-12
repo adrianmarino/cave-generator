@@ -10,12 +10,12 @@ namespace Procedural.Model
         {
             return SharedTriangles(another).ToArray().Length == 1;
         }
-        
+
         public IEnumerable<Triangle> SharedTriangles(Vertex another)
         {
             return triangles.Where(it => it.Contains(another));
         }
-        
+
         internal void belongTo(Triangle triangle)
         {
             triangles.Add(triangle);

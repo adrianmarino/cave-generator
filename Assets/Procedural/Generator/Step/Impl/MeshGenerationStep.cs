@@ -7,7 +7,7 @@ namespace Procedural.Generator.Step.Impl
         public object Perform(StepContext ctx, object input)
         {
             var squares = GetInput(input);
-            var mapMesh = MapMeshFactory.Create(squares);
+            var mapMesh = new MapMeshFactory().Create(squares);
             return new[] {mapMesh};
         }
 

@@ -6,14 +6,9 @@ namespace Procedural.Model
 {
     public class FollowOutlinesStrategy : IOutlineEdgeFactory
     {
-        public IList<Edge> build(IMesh mesh)
+        public IEnumerable<Edge> build(IMesh mesh)
         {
-            return mesh
-                .ExternalVertices
-                .WhereNot(checkedVertices.Contains)
-                .Aggregate(new List<Edge>(), (edges, Vertex) => {
-
-            });
+            return null;
         }
       
         readonly IList<Vertex> checkedVertices = new List<Vertex>();
