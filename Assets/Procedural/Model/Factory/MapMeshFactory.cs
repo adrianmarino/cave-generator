@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 namespace Procedural.Model
@@ -9,13 +10,7 @@ namespace Procedural.Model
         public IMesh Create(SquareMatrix squareMatrix)
         {
             Reset();
-
-            var meshes = new List<IMesh>();
-
-            foreach (var square in squareMatrix)
-                meshes.Add(CreateSquare(square));
-
-            return new Mesh(meshes);
+            return new Mesh(squareMatrix.Select(CreateSquare).ToList());
         }
 
         private IMesh CreateSquare(Square square)
@@ -123,7 +118,6 @@ namespace Procedural.Model
 
         private Mesh CreateMesh(bool inner, params SquareNode[] nodes)
         {
-
             var triangles = new List<Triangle>();
 
             // 1 triangle...

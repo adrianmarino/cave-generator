@@ -8,6 +8,6 @@ namespace Procedural.Model
 
         IList<Triangle> Triangles { get; }
 
-        IList<Vertex> ExternalVertices { get; }
+        IEnumerable<Vertex> ExternalVertices { get; }
     }
 }

@@ -15,14 +15,14 @@ namespace Procedural.Model
 
         public IList<Triangle> Triangles { get; protected set; }
         
-        public IList<Vertex> ExternalVertices
+        public IEnumerable<Vertex> ExternalVertices
         {
-            get { return externalvertices ?? (externalvertices = Triangles.NonInner().DistinctVertices().ToList()); }
+            get { return externalvertices ?? (externalvertices = Triangles.NonInner().DistinctVertices()); }
         }
 
         #endregion
 
-        private IList<Vertex> externalvertices;
+        private IEnumerable<Vertex> externalvertices;
 
         #region Constructors
 
