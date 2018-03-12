@@ -147,7 +147,7 @@ MonoBehaviour:
   wallsMeshFilter: {fileID: 1782689257}
   width: 90
   height: 40
-  randomFillPercent: 45
+  randomFillPercent: 48
   smoothSteps: 5
   maxActiveNeighbors: 4
   neighboursRadio: 1

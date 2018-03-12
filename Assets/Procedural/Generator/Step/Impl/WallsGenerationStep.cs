@@ -11,8 +11,8 @@ namespace Procedural.Generator.Step.Impl
 
             var edges = OutlineEdgesBuilder.build(mapMesh);
 
-            var wallMesh = WallMeshFactory.Create(edges, wallHeight);
-            
+            var wallMesh = new WallMeshFactory().Create(edges, wallHeight);
+
             return new[] {mapMesh, wallMesh};
         }
 

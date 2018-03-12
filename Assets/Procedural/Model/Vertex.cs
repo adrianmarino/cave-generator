@@ -6,6 +6,16 @@ namespace Procedural.Model
 {
     public class Vertex
     {
+        protected bool Equals(Vertex other)
+        {
+            return position.Equals(other.position);
+        }
+
+        public IEnumerable<Vertex> ExternalVertices
+        {
+            get { return externalvertices ?? (externalvertices = Triangles.NonInner().DistinctVertices()); }
+        }
+        
         public bool makeUpOutlineEdge(Vertex another)
         {
             return SharedTriangles(another).ToArray().Length == 1;
@@ -44,6 +54,8 @@ namespace Procedural.Model
         }
 
         #endregion
+
+        private IEnumerable<Vertex> externalvertices;
 
         private readonly Vector3 position;
         

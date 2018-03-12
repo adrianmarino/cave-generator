@@ -23,16 +23,13 @@ namespace Procedural.Model
                 #region One edge nodes...
 
                 case 1:
-                    return CreateMesh(
-                        
-                        square.CentreLeft, square.CentreBottom, square.BottomLeft
-                    );
+                    return CreateMesh(square.CentreLeft, square.CentreBottom, square.BottomLeft);
                 case 2:
-                    return CreateMesh( square.BottomRight, square.CentreBottom, square.CentreRight);
+                    return CreateMesh(square.BottomRight, square.CentreBottom, square.CentreRight);
                 case 4:
-                    return CreateMesh( square.TopRight, square.CentreRight, square.CentreTop);
+                    return CreateMesh(square.TopRight, square.CentreRight, square.CentreTop);
                 case 8:
-                    return CreateMesh( square.TopLeft, square.CentreTop, square.CentreLeft);
+                    return CreateMesh(square.TopLeft, square.CentreTop, square.CentreLeft);
 
                 #endregion
 
@@ -40,18 +37,18 @@ namespace Procedural.Model
 
                 // Vertical
                 case 6:
-                    return CreateMesh( square.CentreTop, square.TopRight, square.BottomRight,
+                    return CreateMesh(square.CentreTop, square.TopRight, square.BottomRight,
                         square.CentreBottom);
                 case 9:
-                    return CreateMesh( square.TopLeft, square.CentreTop, square.CentreBottom,
+                    return CreateMesh(square.TopLeft, square.CentreTop, square.CentreBottom,
                         square.BottomLeft);
 
                 // Horizontal
                 case 3:
-                    return CreateMesh( square.CentreRight, square.BottomRight, square.BottomLeft,
+                    return CreateMesh(square.CentreRight, square.BottomRight, square.BottomLeft,
                         square.CentreLeft);
                 case 12:
-                    return CreateMesh( square.TopLeft, square.TopRight, square.CentreRight,
+                    return CreateMesh(square.TopLeft, square.TopRight, square.CentreRight,
                         square.CentreLeft);
 
                 // Diagonal
