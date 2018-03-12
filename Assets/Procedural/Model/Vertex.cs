@@ -38,7 +38,7 @@ namespace Procedural.Model
 
         #region Properties
 
-        public HashSet<Triangle> Triangles
+        public IEnumerable<Triangle> Triangles
         {
             get { return triangles; }
         }

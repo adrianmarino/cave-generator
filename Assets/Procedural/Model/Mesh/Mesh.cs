@@ -18,7 +18,7 @@ namespace Procedural.Model
 
         #region Properties
 
-        public IList<Triangle> Triangles { get; protected set; }
+        public IEnumerable<Triangle> Triangles { get; protected set; }
         
         public IEnumerable<Vertex> ExternalVertices
         {
@@ -41,7 +41,7 @@ namespace Procedural.Model
             Triangles = new List<Triangle>(triangles);
         }
 
-        public Mesh(IList<Triangle> triangles)
+        public Mesh(IEnumerable<Triangle> triangles)
         {
             Triangles = triangles;
         }

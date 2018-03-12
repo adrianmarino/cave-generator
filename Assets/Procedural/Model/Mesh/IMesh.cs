@@ -6,7 +6,7 @@ namespace Procedural.Model
     {
         UnityEngine.Mesh asUnityMesh();
 
-        IList<Triangle> Triangles { get; }
+        IEnumerable<Triangle> Triangles { get; }
 
         IEnumerable<Vertex> ExternalVertices { get; }
     }

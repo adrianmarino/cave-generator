@@ -10,7 +10,7 @@ namespace Procedural.Model
         public IMesh Create(SquareMatrix squareMatrix)
         {
             Reset();
-            return new Mesh(squareMatrix.Select(CreateSquare).ToList());
+            return new Mesh(squareMatrix.Select(CreateSquare));
         }
 
         private IMesh CreateSquare(Square square)
