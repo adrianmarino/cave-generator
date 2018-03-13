@@ -12,7 +12,7 @@ namespace Procedural.Model
 
         private void AddNode(float squareSideSize, Cell cell, Vector3 position)
         {
-            nodes[cell.Point.X, cell.Point.Y] = new SquareEdgeNode(
+            nodes[cell.Coord.X, cell.Coord.Y] = new SquareEdgeNode(
                 position,
                 squareSideSize,
                 cell.Value == 1
@@ -22,9 +22,9 @@ namespace Procedural.Model
         private static Vector3 CreatePosition(CellMatrix cellMatrix, Cell cell)
         {
             return new Vector3(
-                cellMatrix.BottomLeft.x + cell.Point.X,
+                cellMatrix.BottomLeft.x + cell.Coord.X,
                 0,
-                cellMatrix.BottomLeft.y + cell.Point.Y
+                cellMatrix.BottomLeft.y + cell.Coord.Y
             );
         }
 

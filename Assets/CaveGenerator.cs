@@ -53,7 +53,9 @@ namespace Generator
                 smoothSteps, 
                 maxActiveNeighbors, 
                 neighboursRadio, 
-                squadSide
+                squadSide,
+                removeRegionsSize,
+                borderSize
             );
         }
 
@@ -118,6 +120,10 @@ namespace Generator
         [SerializeField]
         [Range(0, 100)]
         int randomFillPercent;
+        
+        [Tooltip("Border size")]
+        [SerializeField]
+        private int borderSize;
 
         [Header("Smooth")] [Tooltip("Times that execute Smooth map filter.")] [SerializeField]
         int smoothSteps;
@@ -131,6 +137,10 @@ namespace Generator
         [SerializeField]
         int neighboursRadio;
 
+        [Tooltip("Remove wall/cave regions with size < to this")]
+        [SerializeField]
+        private int removeRegionsSize;
+        
         [Space(10)]
         [Header("Squares Generation Step")]
         [Tooltip("Square size size. Used for 'Matching Squares Method'")]
@@ -161,6 +171,8 @@ namespace Generator
             squadSide = 1;
             rendererService = new RendererService();
             pipelineBuilder = new GenerationPipelineBuilder();
+            removeRegionsSize = 5;
+            borderSize = 1;
         }
     }
 }

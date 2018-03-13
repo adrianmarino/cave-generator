@@ -1,8 +1,8 @@
 ﻿namespace Procedural.Model
 {
-    public class Point
+    public class Coord
     {
-        private bool Equals(Point other)
+        private bool Equals(Coord other)
         {
             return x == other.x && y == other.y;
         }
@@ -12,7 +12,7 @@
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != GetType()) return false;
-            return Equals((Point) obj);
+            return Equals((Coord) obj);
         }
 
         public override int GetHashCode()
@@ -40,7 +40,7 @@
         
         private readonly int x, y;
 
-        public Point(int x, int y)
+        public Coord(int x, int y)
         {
             this.x = x;
             this.y = y;

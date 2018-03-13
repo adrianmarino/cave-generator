@@ -8,9 +8,9 @@ namespace Procedural.Model
         public static void DrawCell(CellMatrix cellMatrix, Cell cell)
         {
             var position = new Vector3(
-                cellMatrix.BottomLeft.x + cell.Point.X, 
+                cellMatrix.BottomLeft.x + cell.Coord.X, 
                 0,
-                cellMatrix.BottomLeft.y + cell.Point.Y
+                cellMatrix.BottomLeft.y + cell.Coord.Y
             );
             Gizmos.color = cell.Value == 1 ? Color.black : Color.white;
             Gizmos.DrawCube(position, Vector3.one);

@@ -6,15 +6,19 @@
 
         public int Width { get; private set; }
         
-        public int NeighboursRadio { get; set; }
+        public int NeighboursRadio { get; private set; }
 
-        public float SquadSide { get; set; }
+        public float SquadSide { get; private set; }
 
-        public int MaxActiveNeighbors { get; set; }
+        public int MaxActiveNeighbors { get; private set; }
 
-        public int SmoothSteps { get; set; }
+        public int SmoothSteps { get; private set; }
 
-        public int RandomFillPercent { get; set; }
+        public int RandomFillPercent { get; private set; }
+        
+        public int RemoveRegionsSize { get; private set; }
+        
+        public int BorderSize { get; private set; }
 
         public StepContext(
             int width, 
@@ -23,7 +27,9 @@
             int smoothSteps,
             int maxActiveNeighbors, 
             int neighboursRadio, 
-            float squadSide
+            float squadSide,
+            int removeRegionsSize,
+            int borderSize
         )
         {
             Width = width;
@@ -33,6 +39,8 @@
             MaxActiveNeighbors = maxActiveNeighbors;
             NeighboursRadio = neighboursRadio;
             SquadSide = squadSide;
+            RemoveRegionsSize = removeRegionsSize;
+            BorderSize = borderSize;
         }
     }
 }

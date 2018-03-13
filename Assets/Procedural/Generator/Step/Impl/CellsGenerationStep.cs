@@ -9,9 +9,20 @@ namespace Procedural.Generator.Step.Impl
         {
             var random = RandomFactory.Create();
 
-            return new CellMatrix(ctx.Width, ctx.Height)
+            return CreateCellMatrix(ctx)
                 .Fill(random, ctx.RandomFillPercent)
-                .Smooth(ctx.SmoothSteps, ctx.MaxActiveNeighbors, ctx.NeighboursRadio);
+                .Smooth(
+                    ctx.SmoothSteps,
+                    ctx.MaxActiveNeighbors,
+                    ctx.NeighboursRadio
+                )
+                .RemoveRegions(ctx.RemoveRegionsSize)
+                .MakeBorders();
+        }
+
+        private static CellMatrix CreateCellMatrix(StepContext ctx)
+        {
+            return new CellMatrix(ctx.Width, ctx.Height, ctx.BorderSize);
         }
     }
 }
