@@ -12,7 +12,7 @@ namespace Procedural.Model
                 0,
                 cellMatrix.BottomLeft.y + cell.Coord.Y
             );
-            Gizmos.color = cell.Value == 1 ? Color.black : Color.white;
+            Gizmos.color = cell.isWall() ? Color.black : Color.white;
             Gizmos.DrawCube(position, Vector3.one);
         }
 

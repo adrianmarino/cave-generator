@@ -8,109 +8,80 @@ using Random = System.Random;
 
 namespace Procedural.Model
 {   
-    public class CellMatrix: IEnumerable<Cell>
+    public class CellMatrix: IEnumerable<Cell>, ITwoDimensionIndexable<Cell>
     {
-        public Cell this[int x, int y]
-        {
-            get { return new Cell(this, new Coord(x, y)); }
-        }
-
         public CellMatrix MakeBorders()
         {
-            this.Where(IsEdge).ForEach(cell => cell.MakeWall());
-            return this;
+            this.Where(IsEdge).ForEach(cell => cell.MakeWall()); return this;
+        }
+
+        public CellMatrix Fill(IFillStrategy fillStrategy)
+        {
+            this.ForEach(cell => cell.Value = IsEdge(cell) ? CellValue.Wall : fillStrategy.Next()); return this;
         }
 
         public CellMatrix RemoveRegions(int cellSize)
         {
-            if(cellSize <= 0)
-                return this;
+            if(cellSize <= 0) return this;
 
-            return swapRegionCellValues(region => region.Count < cellSize, Cell.WALL_VALUE, Cell.FLOOR_VALUE)
-                .swapRegionCellValues(region => region.Count < cellSize, Cell.FLOOR_VALUE, Cell.WALL_VALUE);
+            return swapRegionCellValues(region => region.Count < cellSize, CellValue.Wall, CellValue.Floor)
+                .swapRegionCellValues(region => region.Count < cellSize, CellValue.Floor, CellValue.Wall);
         }
 
-        public CellMatrix swapRegionCellValues(
-            Predicate<Region> regionFilter, 
-            int beforeCellValue, 
-            int afterCellValue
+        private CellMatrix swapRegionCellValues(
+            Func<Region, bool> filter, 
+            CellValue previousValue,
+            CellValue laterValue
         )
         {
-            RegionsWith(beforeCellValue)
-                .Where(region => regionFilter(region))
-                .ForEach(region => region.Reset(afterCellValue));
-            return this;
-        }
-        
-        public List<Region> RegionsWith(int CellValue)
-        {
-            return new CellMatrixRegionResolver(this).Resolve(CellValue);
+            RegionsWith(previousValue).Where(filter).ForEach(region => region.SetAllValues(laterValue)); return this;
         }
 
-        public CellMatrix Fill(Random random, int randomFillPercent)
+        private IEnumerable<Region> RegionsWith(CellValue value)
         {
-            this.ForEach(cell => cell.Value = IsEdge(cell) ? 1 : GenerateValue(random, randomFillPercent));
-            return this;
+            return new CellMatrixRegionResolver(this).Resolve(value);
         }
 
-        public CellMatrix Smooth(int steps, int maxActiveNeighbors, int neighboursRadio)
+        public CellMatrix Smooth(int steps, int maxSurroundWalls, int wallsSearchRadio)
         {
             for (var step = 0; step < steps; step++)
-                this.WhereNot(IsEdge)
-                    .ForEach(cell => {
-                        var activeNeighbors = 
-                            NeighboursOf(cell, neighboursRadio)
-                            .Select(neighbour => neighbour.Value)
-                            .Sum();
+                this.WhereNot(IsEdge).ForEach(cell => {
+                    var surroundWalls = SurroundWallsCount(cell, wallsSearchRadio);
 
-                        if(activeNeighbors > maxActiveNeighbors)
-                            cell.MakeWall();
-                        else if (activeNeighbors < maxActiveNeighbors)
-                            cell.MakeFloor();
-                    });
+                    if(surroundWalls > maxSurroundWalls) cell.MakeWall();
+                    else if (surroundWalls < maxSurroundWalls) cell.MakeFloor();
+                });
             return this;
         }
 
-        public IEnumerable<Cell> NeighboursOf(Cell centralCell, int radio)
+        private int SurroundWallsCount(Cell centralCell, int radio)
         {
-            return this
-                .RadialForEach(centralCell, radio)
+            return this.RadialForEach(centralCell, radio)
                 .Where(Contains)
-                .WhereNot(cell => cell.Equals(centralCell))
-                .Aggregate(new List<Cell>(), (neighbours , cell) => {
-                    neighbours.Add(cell);
-                    return neighbours;
-                });       
+                .WhereNot(Equals)
+                .Select(Cell.IntValue)
+                .Sum();
         }
-
 
         public bool Contains(Cell cell)
         {
-            return Contains(cell.Coord);
-        }
-
-        private bool Contains(Coord coord)
-        {
+            var coord = cell.Coord;
             return coord.X >= 0 && coord.X < Width && coord.Y >= 0 && coord.Y < Height;
         }
 
         public bool IsEdge(Cell cell)
         {
-            return IsEdge(cell.Coord);
-        }
-
-        private bool IsEdge(Coord coord)
-        {
+            var coord = cell.Coord;
             return coord.X <= borderSize || coord.Y <= borderSize || coord.X >= Width - borderSize || coord.Y >= Height - borderSize;
         }
 
         #region Properties
 
-        private int[,] Positions
+        private CellValue[,] Positions
         {
             get
             {
-                return map ?? (map = new int[width, height]);
+                return map ?? (map = new CellValue[width, height]);
             }
         }
 
@@ -131,7 +102,7 @@ namespace Procedural.Model
 
         #endregion
         
-        #region Private Methods
+        #region Enumeration
                 
         IEnumerator IEnumerable.GetEnumerator()
         {
@@ -148,20 +119,24 @@ namespace Procedural.Model
                 }
             }
         }
+                
+        public Cell this[int x, int y]
+        {
+            get { return new Cell(this, new Coord(x, y)); }
+        }
+        
+        #endregion
+        
+        #region Cell Value management
 
-        internal int Value(Coord coord)
+        internal CellValue Value(Coord coord)
         {
             return Positions[coord.X, coord.Y];
         }
         
-        internal void Value(Coord coord, int value)
+        internal void Value(Coord coord, CellValue value)
         {
             Positions[coord.X, coord.Y] = value;
-        }
-
-        int GenerateValue(Random random, int randomFillPercent)
-        {
-            return random.Next(0, 100) < randomFillPercent ? 1 : 0;
         }
 
         #endregion
@@ -178,8 +153,8 @@ namespace Procedural.Model
         #endregion
         
         #region Attributes
-        
-        int[,] map;
+
+        CellValue[,] map;
 
         readonly int width;
 

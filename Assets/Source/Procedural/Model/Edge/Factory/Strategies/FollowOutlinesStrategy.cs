@@ -7,7 +7,7 @@ namespace Procedural.Model
 {
     public class FollowOutlinesStrategy : IOutlineEdgeFactory
     {
-        public IEnumerable<Edge> build(IMesh mesh)
+        public IEnumerable<Edge> Build(IMesh mesh)
         {
             Reset();
             return mesh

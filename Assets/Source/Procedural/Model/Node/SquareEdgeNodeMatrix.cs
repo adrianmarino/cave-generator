@@ -3,7 +3,7 @@ using Util;
 
 namespace Procedural.Model
 {
-    public class SquareEdgeNodeMatrix
+    public class SquareEdgeNodeMatrix: ITwoDimensionIndexable<SquareEdgeNode>
     {        
         public SquareEdgeNode this[int x, int y]
         {
@@ -15,7 +15,7 @@ namespace Procedural.Model
             nodes[cell.Coord.X, cell.Coord.Y] = new SquareEdgeNode(
                 position,
                 squareSideSize,
-                cell.Value == 1
+                cell.isWall()
             );
         }
 

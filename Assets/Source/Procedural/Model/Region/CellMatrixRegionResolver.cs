@@ -6,20 +6,20 @@ namespace Procedural.Model
 {
     public class CellMatrixRegionResolver
     {
-        public List<Region> Resolve(int cellValue)
+        public IEnumerable<Region> Resolve(CellValue value)
         {
             InitializeVisited(cellMatrix);
             return cellMatrix
-                .Where(cell => wasNotVisitedAndHasValue(cell, cellValue))
+                .Where(cell => wasNotVisitedAndHasValue(cell, value))
                 .Aggregate(new List<Region>(), (regions, cell) => {
-                    var region = GetContainerRegionOf(cell, cellValue);
+                    var region = GetContainerRegionOf(cell, value);
                     region.ForEach(MakeVisited);                    
                     regions.Add(region);
                     return regions;
                 });
         }
 
-        private Region GetContainerRegionOf(Cell startCell, int cellValue)
+        private Region GetContainerRegionOf(Cell startCell, CellValue value)
         {
             var regionCells = new List<Cell>();
             var incomingCells = new Queue<Cell>();
@@ -35,7 +35,7 @@ namespace Procedural.Model
                     .Where(cell => cellMatrix.Contains(cell))
                     .WhereNot(cell => cellMatrix.IsEdge(cell))
                     .WhereNot(cell => cell.Equals(centralCell))
-                    .Where(cell => wasNotVisitedAndHasValue(cell, cellValue))
+                    .Where(cell => wasNotVisitedAndHasValue(cell, value))
                     .ForEach(cell => {
                         MakeVisited(cell);
                         incomingCells.Enqueue(cell);
@@ -54,7 +54,7 @@ namespace Procedural.Model
             visitedCells[x, y] = true;
         }
 
-        private bool wasNotVisitedAndHasValue(Cell cell, int value)
+        private bool wasNotVisitedAndHasValue(Cell cell, CellValue value)
         {
             return !visitedCells[cell.Coord.X, cell.Coord.Y] && cell.Value == value;
         }

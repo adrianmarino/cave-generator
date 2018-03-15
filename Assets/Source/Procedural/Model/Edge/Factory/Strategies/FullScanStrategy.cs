@@ -5,7 +5,7 @@ namespace Procedural.Model
 {
     public class FullScanStrategy: IOutlineEdgeFactory
     {
-        public IEnumerable<Edge> build(IMesh mesh)
+        public IEnumerable<Edge> Build(IMesh mesh)
         {
             return  from vertex1 in mesh.ExternalVertices
                     from vertex2 in mesh.ExternalVertices

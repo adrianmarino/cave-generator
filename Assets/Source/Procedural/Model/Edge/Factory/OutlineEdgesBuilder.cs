@@ -6,8 +6,8 @@ namespace Procedural.Model
     {
         public static IEnumerable<Edge> build(IMesh mesh)
         {
-            // return new FullScanStrategy().build(mesh);
-            return new FollowOutlinesStrategy().build(mesh);
+            // return new FullScanStrategy().Build(mesh);
+            return new FollowOutlinesStrategy().Build(mesh);
         }
     }
 }

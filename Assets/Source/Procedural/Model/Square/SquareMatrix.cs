@@ -4,12 +4,7 @@ using System.Collections.Generic;
 namespace Procedural.Model
 {
     public class SquareMatrix: IEnumerable<Square>
-    {       
-        IEnumerator IEnumerable.GetEnumerator()
-        {
-            return GetEnumerator();
-        }
-
+    {     
         public IEnumerator<Square> GetEnumerator()
         {
             for (var x = 0; x < Width; x++)
@@ -20,13 +15,18 @@ namespace Procedural.Model
                 }
             }
         }
+  
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return GetEnumerator();
+        }
 
-        public float Width
+        private float Width
         {
             get { return squares.GetLength(0); }
         }
 
-        public float Height
+        private float Height
         {
             get { return squares.GetLength(1);  }
         }

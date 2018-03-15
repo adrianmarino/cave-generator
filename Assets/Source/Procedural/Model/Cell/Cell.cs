@@ -2,14 +2,24 @@
 {
     public class Cell
     {
+        public static int IntValue(Cell cell)
+        {
+            return (int)cell.Value;
+        }
+        
+        public bool isWall()
+        {
+            return Value == CellValue.Wall;
+        }
+        
         public void MakeWall()
         {
-            Value = WALL_VALUE;
+            Value = CellValue.Wall;
         }
         
         public void MakeFloor()
         {
-            Value = FLOOR_VALUE;
+            Value = CellValue.Floor;
         }
         
         protected bool Equals(Cell other)
@@ -22,7 +32,7 @@
             return string.Format("(X, Y, Value) = ({0}, {1}, {2})", Coord.X, Coord.Y, Value);
         }
         
-        public int Value
+        public CellValue Value
         {
             get {
                 return map.Value(coord);
@@ -37,10 +47,6 @@
         {
             get { return coord; }
         }
-
-        public const int WALL_VALUE = 1;
-
-        public const int FLOOR_VALUE = 0;
 
         private readonly Coord coord;
 

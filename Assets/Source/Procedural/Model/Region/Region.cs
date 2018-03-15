@@ -16,8 +16,8 @@ namespace Procedural.Model
         {
             return GetEnumerator();
         }
-        
-        public void Reset(int value)
+
+        public void SetAllValues(CellValue value)
         {
             this.ForEach(cell => cell.Value = value);
         }
