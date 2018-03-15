@@ -1,12 +1,8 @@
 ﻿using Procedural.Model;
 
-namespace Procedural.Generator.Step.Impl
-{
-    public class WallsGenerationStep: IGenerationStep
-    {
-        public object Perform(StepContext ctx, object data)
-        {
-            
+namespace Procedural.Generator.Step.Impl {
+    public class WallsGenerationStep : IGenerationStep {
+        public object Perform(StepContext ctx, object data) {
             var mapMesh = GetInput(data);
 
             var edges = OutlineEdgesBuilder.build(mapMesh);
@@ -16,8 +12,7 @@ namespace Procedural.Generator.Step.Impl
             return new[] {mapMesh, wallMesh};
         }
 
-        private static IMesh GetInput(object data)
-        {
+        private static IMesh GetInput(object data) {
             var meshes = (IMesh[]) data;
             return meshes[0];
         }

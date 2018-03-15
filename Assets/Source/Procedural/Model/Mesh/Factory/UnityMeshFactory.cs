@@ -1,14 +1,10 @@
 ﻿using System.Linq;
 
-namespace Procedural.Model
-{
-    public static class UnityMeshFactory
-    {
-        public static UnityEngine.Mesh Create(IMesh mesh)
-        {
+namespace Procedural.Model {
+    public static class UnityMeshFactory {
+        public static UnityEngine.Mesh Create(IMesh mesh) {
             var triangleVertices = mesh.Triangles.Vertices();
-            var unityMesh = new UnityEngine.Mesh
-            {
+            var unityMesh = new UnityEngine.Mesh {
                 vertices = triangleVertices.Distinct().sorByIndex().Positions().ToArray(),
                 triangles = triangleVertices.Indexes().ToArray()
             };

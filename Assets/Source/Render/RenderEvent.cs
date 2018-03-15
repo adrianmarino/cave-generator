@@ -1,7 +1,5 @@
-﻿namespace Render
-{
-    public enum RenderEvent
-    {
+﻿namespace Render {
+    public enum RenderEvent {
         OnDrawGizmos,
         Update
     }

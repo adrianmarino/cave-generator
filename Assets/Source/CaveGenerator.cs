@@ -7,107 +7,86 @@ using UnityEngine;
 using Util;
 using Procedural.Model;
 
-namespace Generator
-{
+namespace Generator {
     [HelpURL("https://en.wikipedia.org/wiki/Marching_squares")]
-    public class CaveGenerator : MonoBehaviour
-    {
-        private void Start()
-        {
+    public class CaveGenerator : MonoBehaviour {
+        private void Start() {
             Generate();
         }
 
-        private void OnDrawGizmos()
-        {
+        private void OnDrawGizmos() {
             Render(RenderEvent.OnDrawGizmos);
         }
 
-        private void Update()
-        {
+        private void Update() {
             if (!Input.GetMouseButtonDown(0)) return;
 
             Generate();
             Render(RenderEvent.Update);
         }
 
-        private void Generate()
-        {
+        private void Generate() {
             CleanView();
             var ctx = CreateStepContext();
             var pipeline = pipelineBuilder.Build(step);
             output = pipeline.Perform(ctx);
         }
-        
-        private void Render(RenderEvent renderEvent)
-        {
+
+        private void Render(RenderEvent renderEvent) {
             var ctx = new RenderContext(renderEvent, output, this);
             rendererService.Render(ctx);
         }
 
-        private StepContext CreateStepContext()
-        {
+        private StepContext CreateStepContext() {
             return new StepContext(
-                width, 
-                height, 
-                randomFillPercent, 
-                smoothSteps, 
-                maxActiveNeighbors, 
-                neighboursRadio, 
+                width,
+                height,
+                randomFillPercent,
+                smoothSteps,
+                maxActiveNeighbors,
+                neighboursRadio,
                 squadSide,
                 removeRegionsSize,
                 borderSize
             );
         }
 
-        public void CleanView()
-        {
+        public void CleanView() {
             MeshFilters.ForEach(it => it.mesh.Clear());
         }
 
-        public void Show(IList<IMesh> meshes)
-        {
+        public void Show(IList<IMesh> meshes) {
             for (var index = 0; index < meshes.Count; index++)
                 MeshFilters[index].mesh = meshes[index].asUnityMesh();
         }
-        
+
         #region Properties
-        
-        public MeshFilter[] MeshFilters
-        {
-            get
-            {
-                return new [] {GetComponent<MeshFilter>(), wallsMeshFilter}.WhereNotNull().ToArray();
-            }
-        }
-        
-        public Camera Camera
-        {
-            get
-            {
-                return sceneCamera; 
-            }
+
+        public MeshFilter[] MeshFilters {
+            get { return new[] {GetComponent<MeshFilter>(), wallsMeshFilter}.WhereNotNull().ToArray(); }
         }
 
-        public GenerationStep Step
-        {
+        public Camera Camera {
+            get { return sceneCamera; }
+        }
+
+        public GenerationStep Step {
             get { return step; }
         }
 
         #endregion
-        
+
         #region Attributes
 
         [Header("Generation")] [Tooltip("Select the step of map construction.")] [SerializeField]
         GenerationStep step;
-        
-        [Tooltip("Scene Camera")]
-        [SerializeField]
+
+        [Tooltip("Scene Camera")] [SerializeField]
         Camera sceneCamera;
 
-        [Tooltip("Map filter of Walls inner object.")]
-        [SerializeField]
+        [Tooltip("Map filter of Walls inner object.")] [SerializeField]
         MeshFilter wallsMeshFilter;
-        
+
         [Header("Size")] [Tooltip("Height of Map.")] [SerializeField]
         int width;
 
@@ -120,9 +99,8 @@ namespace Generator
         [SerializeField]
         [Range(0, 100)]
         int randomFillPercent;
-        
-        [Tooltip("Border size")]
-        [SerializeField]
+
+        [Tooltip("Border size")] [SerializeField]
         private int borderSize;
 
         [Header("Smooth")] [Tooltip("Times that execute Smooth map filter.")] [SerializeField]
@@ -137,27 +115,25 @@ namespace Generator
         [SerializeField]
         int neighboursRadio;
 
-        [Tooltip("Remove wall/cave regions with size < to this")]
-        [SerializeField]
+        [Tooltip("Remove wall/cave regions with size < to this")] [SerializeField]
         private int removeRegionsSize;
-        
+
         [Space(10)]
         [Header("Squares Generation Step")]
         [Tooltip("Square size size. Used for 'Matching Squares Method'")]
         [SerializeField]
         [Range(0, 10)]
         float squadSide;
-        
+
         object output;
 
         readonly RendererService rendererService;
-        
+
         readonly GenerationPipelineBuilder pipelineBuilder;
-        
+
         #endregion
 
-        public CaveGenerator()
-        {
+        public CaveGenerator() {
             output = null;
             sceneCamera = null;
             wallsMeshFilter = null;

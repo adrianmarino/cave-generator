@@ -6,56 +6,50 @@ using UnityEngine;
 using Util;
 using Random = System.Random;
 
-namespace Procedural.Model
-{   
-    public class CellMatrix: IEnumerable<Cell>, ITwoDimensionIndexable<Cell>
-    {
-        public CellMatrix MakeBorders()
-        {
-            this.Where(IsEdge).ForEach(cell => cell.MakeWall()); return this;
+namespace Procedural.Model {
+    public class CellMatrix : IEnumerable<Cell>, ITwoDimensionIndexable<Cell> {
+        public CellMatrix MakeBorders() {
+            this.Where(IsEdge).ForEach(cell => cell.MakeWall());
+            return this;
         }
 
-        public CellMatrix Fill(IFillStrategy fillStrategy)
-        {
-            this.ForEach(cell => cell.Value = IsEdge(cell) ? CellValue.Wall : fillStrategy.Next()); return this;
+        public CellMatrix Fill(IFillStrategy fillStrategy) {
+            this.ForEach(cell => cell.Value = IsEdge(cell) ? CellValue.Wall : fillStrategy.Next());
+            return this;
         }
 
-        public CellMatrix RemoveRegions(int cellSize)
-        {
-            if(cellSize <= 0) return this;
+        public CellMatrix RemoveRegions(int cellSize) {
+            if (cellSize <= 0) return this;
 
             return swapRegionCellValues(region => region.Count < cellSize, CellValue.Wall, CellValue.Floor)
                 .swapRegionCellValues(region => region.Count < cellSize, CellValue.Floor, CellValue.Wall);
         }
 
         private CellMatrix swapRegionCellValues(
-            Func<Region, bool> filter, 
+            Func<Region, bool> filter,
             CellValue previousValue,
             CellValue laterValue
-        )
-        {
-            RegionsWith(previousValue).Where(filter).ForEach(region => region.SetAllValues(laterValue)); return this;
+        ) {
+            RegionsWith(previousValue).Where(filter).ForEach(region => region.SetAllValues(laterValue));
+            return this;
         }
 
-        private IEnumerable<Region> RegionsWith(CellValue value)
-        {
+        private IEnumerable<Region> RegionsWith(CellValue value) {
             return new CellMatrixRegionResolver(this).Resolve(value);
         }
 
-        public CellMatrix Smooth(int steps, int maxSurroundWalls, int wallsSearchRadio)
-        {
+        public CellMatrix Smooth(int steps, int maxSurroundWalls, int wallsSearchRadio) {
             for (var step = 0; step < steps; step++)
                 this.WhereNot(IsEdge).ForEach(cell => {
                     var surroundWalls = SurroundWallsCount(cell, wallsSearchRadio);
 
-                    if(surroundWalls > maxSurroundWalls) cell.MakeWall();
+                    if (surroundWalls > maxSurroundWalls) cell.MakeWall();
                     else if (surroundWalls < maxSurroundWalls) cell.MakeFloor();
                 });
             return this;
         }
 
-        private int SurroundWallsCount(Cell centralCell, int radio)
-        {
+        private int SurroundWallsCount(Cell centralCell, int radio) {
             return this.RadialForEach(centralCell, radio)
                 .Where(Contains)
                 .WhereNot(Equals)
@@ -63,95 +57,79 @@ namespace Procedural.Model
                 .Sum();
         }
 
-        public bool Contains(Cell cell)
-        {
+        public bool Contains(Cell cell) {
             var coord = cell.Coord;
             return coord.X >= 0 && coord.X < Width && coord.Y >= 0 && coord.Y < Height;
         }
 
-        public bool IsEdge(Cell cell)
-        {
+        public bool IsEdge(Cell cell) {
             var coord = cell.Coord;
-            return coord.X <= borderSize || coord.Y <= borderSize || coord.X >= Width - borderSize || coord.Y >= Height - borderSize;
+            return coord.X <= borderSize || coord.Y <= borderSize || coord.X >= Width - borderSize ||
+                   coord.Y >= Height - borderSize;
         }
 
         #region Properties
 
-        private CellValue[,] Positions
-        {
-            get
-            {
-                return map ?? (map = new CellValue[width, height]);
-            }
+        private CellValue[,] Positions {
+            get { return map ?? (map = new CellValue[width, height]); }
         }
 
-        public Vector3 BottomLeft
-        {
+        public Vector3 BottomLeft {
             get { return new Vector3(-Width / 2, 0, -Height / 2); }
         }
 
-        public int Width
-        {
+        public int Width {
             get { return width; }
         }
 
-        public int Height
-        {
+        public int Height {
             get { return height; }
         }
 
         #endregion
-        
+
         #region Enumeration
-                
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+
+        IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
-        public IEnumerator<Cell> GetEnumerator()
-        {
-            for (var x = 0; x < Width; x++)
-            {
-                for (var y = 0; y < Height; y++)
-                {
+        public IEnumerator<Cell> GetEnumerator() {
+            for (var x = 0; x < Width; x++){
+                for (var y = 0; y < Height; y++){
                     yield return new Cell(this, new Coord(x, y));
                 }
             }
         }
-                
-        public Cell this[int x, int y]
-        {
+
+        public Cell this[int x, int y] {
             get { return new Cell(this, new Coord(x, y)); }
         }
-        
+
         #endregion
-        
+
         #region Cell Value management
 
-        internal CellValue Value(Coord coord)
-        {
+        internal CellValue Value(Coord coord) {
             return Positions[coord.X, coord.Y];
         }
-        
-        internal void Value(Coord coord, CellValue value)
-        {
+
+        internal void Value(Coord coord, CellValue value) {
             Positions[coord.X, coord.Y] = value;
         }
 
         #endregion
 
         #region Constructors
-        
-        public CellMatrix(int width, int height, int borderSize)
-        {
+
+        public CellMatrix(int width, int height, int borderSize) {
             this.width = width;
             this.height = height;
             this.borderSize = borderSize;
         }
 
         #endregion
-        
+
         #region Attributes
 
         CellValue[,] map;

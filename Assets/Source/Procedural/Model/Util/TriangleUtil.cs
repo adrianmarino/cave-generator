@@ -2,17 +2,13 @@
 using System.Linq;
 using Util;
 
-namespace Procedural.Model
-{
-    public static class TriangleUtil
-    {
-        public static IEnumerable<Vertex> DistinctVertices(this IEnumerable<Triangle> triangles)
-        {
+namespace Procedural.Model {
+    public static class TriangleUtil {
+        public static IEnumerable<Vertex> DistinctVertices(this IEnumerable<Triangle> triangles) {
             return triangles.Vertices().Distinct();
         }
 
-        public static IEnumerable<Vertex> Vertices(this IEnumerable<Triangle> triangles)
-        {
+        public static IEnumerable<Vertex> Vertices(this IEnumerable<Triangle> triangles) {
             return triangles.SelectMany(it => it.Vertices);
         }
 

@@ -1,56 +1,44 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 
-namespace Procedural.Model
-{
-    public class SquareMatrix: IEnumerable<Square>
-    {     
-        public IEnumerator<Square> GetEnumerator()
-        {
-            for (var x = 0; x < Width; x++)
-            {
-                for (var y = 0; y < Height; y++)
-                {
+namespace Procedural.Model {
+    public class SquareMatrix : IEnumerable<Square> {
+        public IEnumerator<Square> GetEnumerator() {
+            for (var x = 0; x < Width; x++){
+                for (var y = 0; y < Height; y++){
                     yield return squares[x, y];
                 }
             }
         }
-  
-        IEnumerator IEnumerable.GetEnumerator()
-        {
+
+        IEnumerator IEnumerable.GetEnumerator() {
             return GetEnumerator();
         }
 
-        private float Width
-        {
+        private float Width {
             get { return squares.GetLength(0); }
         }
 
-        private float Height
-        {
-            get { return squares.GetLength(1);  }
+        private float Height {
+            get { return squares.GetLength(1); }
         }
 
-        private static Square CreateSquare(SquareEdgeNodeMatrix edgeNodes, int x, int y)
-        {
+        private static Square CreateSquare(SquareEdgeNodeMatrix edgeNodes, int x, int y) {
             return new Square(
-                edgeNodes[x, y+1],
-                edgeNodes[x+1, y+1],
+                edgeNodes[x, y + 1],
+                edgeNodes[x + 1, y + 1],
                 edgeNodes[x, y],
-                edgeNodes[x+1, y]
+                edgeNodes[x + 1, y]
             );
         }
-        
+
         readonly Square[,] squares;
 
-        public SquareMatrix(SquareEdgeNodeMatrix edgeNodes)
-        {
+        public SquareMatrix(SquareEdgeNodeMatrix edgeNodes) {
             squares = new Square[edgeNodes.Width - 1, edgeNodes.Height - 1];
 
-            for (var x = 0; x < edgeNodes.Width - 1; x++)
-            {
-                for (var y = 0; y < edgeNodes.Height - 1; y++)
-                {
+            for (var x = 0; x < edgeNodes.Width - 1; x++){
+                for (var y = 0; y < edgeNodes.Height - 1; y++){
                     squares[x, y] = CreateSquare(edgeNodes, x, y);
                 }
             }

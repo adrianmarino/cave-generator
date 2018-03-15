@@ -1,9 +1,7 @@
 ﻿using System.Collections.Generic;
 
-namespace Procedural.Model
-{
-    public interface IMesh
-    {
+namespace Procedural.Model {
+    public interface IMesh {
         UnityEngine.Mesh asUnityMesh();
 
         IEnumerable<Triangle> Triangles { get; }

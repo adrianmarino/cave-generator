@@ -1,15 +1,11 @@
 ﻿using System;
 
-namespace Render
-{
-    public abstract class Renderer : IRenderer
-    {        
+namespace Render {
+    public abstract class Renderer : IRenderer {
         public abstract bool CanRender(RenderContext context);
 
-        public void Render(RenderContext ctx)
-        {
-            switch (ctx.Event)
-            {
+        public void Render(RenderContext ctx) {
+            switch (ctx.Event){
                 case RenderEvent.OnDrawGizmos:
                     OnDrawGizmos(ctx);
                     break;
@@ -21,12 +17,8 @@ namespace Render
             }
         }
 
-        protected virtual void OnDrawGizmos(RenderContext context)
-        {
-        }
+        protected virtual void OnDrawGizmos(RenderContext context) { }
 
-        protected virtual void Update(RenderContext context)
-        {
-        }
+        protected virtual void Update(RenderContext context) { }
     }
 }

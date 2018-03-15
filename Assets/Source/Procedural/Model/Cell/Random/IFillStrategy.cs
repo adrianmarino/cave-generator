@@ -1,7 +1,5 @@
-﻿namespace Procedural.Model
-{
-    public interface IFillStrategy
-    {
+﻿namespace Procedural.Model {
+    public interface IFillStrategy {
         CellValue Next();
     }
 }

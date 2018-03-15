@@ -3,20 +3,15 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-namespace Procedural.Model
-{
-    public class MapMeshFactory
-    {
-        public IMesh Create(SquareMatrix squareMatrix)
-        {
+namespace Procedural.Model {
+    public class MapMeshFactory {
+        public IMesh Create(SquareMatrix squareMatrix) {
             Reset();
             return new Mesh(squareMatrix.Select(CreateSquare));
         }
 
-        private IMesh CreateSquare(Square square)
-        {
-            switch (square.Configuration)
-            {
+        private IMesh CreateSquare(Square square) {
+            switch (square.Configuration){
                 case 0:
                     return new Mesh();
 
@@ -108,13 +103,11 @@ namespace Procedural.Model
             }
         }
 
-        private Mesh CreateMesh(params SquareNode[] nodes)
-        {
+        private Mesh CreateMesh(params SquareNode[] nodes) {
             return CreateMesh(false, nodes);
         }
 
-        private Mesh CreateMesh(bool inner, params SquareNode[] nodes)
-        {
+        private Mesh CreateMesh(bool inner, params SquareNode[] nodes) {
             var triangles = new List<Triangle>();
 
             // 1 triangle...
@@ -140,8 +133,7 @@ namespace Procedural.Model
             IList<SquareNode> nodes,
             bool inner,
             params int[] vertexIndex
-        )
-        {
+        ) {
             return new Triangle(
                 GetVertex(nodes, vertexIndex[0]),
                 GetVertex(nodes, vertexIndex[1]),
@@ -150,8 +142,7 @@ namespace Procedural.Model
             );
         }
 
-        private Vertex GetVertex(IList<SquareNode> nodes, int nodeIndex)
-        {
+        private Vertex GetVertex(IList<SquareNode> nodes, int nodeIndex) {
             var nodePosition = nodes[nodeIndex].Position;
 
             if (vertices.ContainsKey(nodePosition))
@@ -162,14 +153,13 @@ namespace Procedural.Model
             return vertex;
         }
 
-        private void Reset()
-        {
+        private void Reset() {
             indexSequence = new IndexSequence(0);
             vertices = new Dictionary<Vector3, Vertex>();
         }
 
         private IDictionary<Vector3, Vertex> vertices;
-        
+
         private IndexSequence indexSequence;
-    }   
+    }
 }
