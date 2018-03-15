@@ -147,12 +147,12 @@ MonoBehaviour:
   wallsMeshFilter: {fileID: 1782689257}
   width: 100
   height: 50
-  randomFillPercent: 40
+  randomFillPercent: 39
   borderSize: 2
   smoothSteps: 5
   maxActiveNeighbors: 4
   neighboursRadio: 1
-  removeRegionsSize: 20
+  removeRegionsSize: 30
   squadSide: 1
 --- !u!4 &224279402
 Transform:
