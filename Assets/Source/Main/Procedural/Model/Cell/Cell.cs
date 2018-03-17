@@ -1,5 +1,33 @@
-﻿namespace Procedural.Model {
+﻿using UnityEngine;
+
+namespace Procedural.Model {
     public class Cell {
+        protected bool Equals(Cell other) {
+            return Equals(coord, other.coord);
+        }
+
+        public override bool Equals(object obj) {
+            if (ReferenceEquals(null, obj)) return false;
+            if (ReferenceEquals(this, obj)) return true;
+            return obj.GetType() == GetType() && Equals((Cell) obj);
+        }
+
+        public override int GetHashCode() {
+            return (coord != null ? coord.GetHashCode() : 0);
+        }
+
+        public Vector3 ToWorld(CellMatrix cellMatrix) {
+            return new Vector3 (
+                cellMatrix.BottomLeft.x + Coord.X,
+                0,
+                cellMatrix.BottomLeft.y + Coord.Y
+            );
+        }
+
+        public float Distance(Cell other) {
+            return Coord.Distance(other.Coord);
+        }
+        
         public static int IntValue(Cell cell) {
             return (int) cell.Value;
         }
@@ -14,10 +42,6 @@
 
         public void MakeFloor() {
             Value = CellValue.Floor;
-        }
-
-        protected bool Equals(Cell other) {
-            return Equals(coord, other.coord);
         }
 
         public override string ToString() {

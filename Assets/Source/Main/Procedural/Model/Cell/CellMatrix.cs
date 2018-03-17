@@ -2,12 +2,54 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Procedural.Generator.Step.Impl;
 using UnityEngine;
 using Util;
 using Random = System.Random;
 
 namespace Procedural.Model {
     public class CellMatrix : IEnumerable<Cell>, ITwoDimensionIndexable<Cell> {
+
+        public CellMatrix MakeRegionPassages() {
+            Passages.Clear();
+            var regions = RegionsBy(CellValue.Floor);
+            RegionPassage bestPassage = null;
+
+            foreach (var regionA in regions){                
+                var possibleConnectionFound = false;
+                var bestDistance = 0f;
+
+                foreach (var regionB in regions){
+                    if (regionA.Equals(regionB)){
+                        continue;
+                    }
+
+                    if (regionA.isConnected(regionB)){
+                        possibleConnectionFound = false;
+                        break;
+                    }
+
+                    foreach (var cellA in regionA.EdgeCells){
+                        foreach (var cellB in regionB.EdgeCells){
+                            var distance = cellA.Distance(cellB);
+                            if (distance < bestDistance || !possibleConnectionFound){
+                                possibleConnectionFound = true;
+                                bestDistance = distance;
+                                bestPassage = new RegionPassage(regionA, regionB, cellA, cellB);
+                            }
+                        }
+                    }
+                }
+
+                if (bestPassage != null){
+                   bestPassage.RegionA.Passage(bestPassage);
+                   bestPassage.RegionB.Passage(bestPassage);
+                   Passages.Add(bestPassage);
+                }
+            }
+            return this;
+        }
+        
         public CellMatrix MakeBorders() {
             this.Where(IsEdge).ForEach(cell => cell.MakeWall());
             return this;
@@ -18,9 +60,14 @@ namespace Procedural.Model {
             return this;
         }
 
-        public IEnumerable<Region> ResetRegionsWithCellCountLessThan(int cellSize) {
-            return SwapRegionValues(CellValue.Floor, CellValue.Wall, it => it.Count < cellSize)
-                .Concat(SwapRegionValues(CellValue.Wall, CellValue.Floor,it => it.Count < cellSize));
+        public CellMatrix RemoveWallRegionLessThan(int cellSize) {
+            SwapRegionValues(CellValue.Wall, CellValue.Floor, it => it.Count < cellSize);
+            return this;
+        }
+
+        public CellMatrix RemoveCaveRegionLessThan(int cellSize) {
+            SwapRegionValues(CellValue.Floor, CellValue.Wall,it => it.Count < cellSize);
+            return this;
         }
 
         public CellMatrix Smooth(int steps, int maxSurroundWalls, int wallsSearchRadio) {
@@ -34,28 +81,25 @@ namespace Procedural.Model {
             return this;
         }
 
-        public IEnumerable<Region> SwapRegionValues(
-            CellValue previousValue,
-            CellValue laterValue,
-            Func<Region, bool> where
-        ) {
-            var regionGroups = RegionsBy(previousValue).ToLookup(where);
-            regionGroups[true].ResetValues(laterValue);
-            return regionGroups[false];
+        private void SwapRegionValues(CellValue previousValue, CellValue laterValue, Func<Region, bool> where) {
+            RegionsBy(previousValue).Where(where).ResetValues(laterValue);
         }
 
         public IEnumerable<Region> RegionsBy(CellValue value) {
             return new CellMatrixRegionResolver(this).Resolve(value);
         }
 
-        private int SurroundWallsCount(Cell centralCell, int radio) {
-            return this.RadialForEach(centralCell, radio)
+        public IEnumerable<Cell> NeighbourOf(Cell centralCell, int radio) {
+            return this
+                .RadialForEach(centralCell, radio)
                 .Where(Contains)
-                .WhereNot(Equals)
-                .Select(Cell.IntValue)
-                .Sum();
+                .WhereNot(Equals);
         }
 
+        private int SurroundWallsCount(Cell centralCell, int radio) {
+            return NeighbourOf(centralCell, radio).Select(Cell.IntValue).Sum();
+        }
+        
         public bool Contains(Cell cell) {
             var coord = cell.Coord;
             return coord.X >= 0 && coord.X < Width && coord.Y >= 0 && coord.Y < Height;
@@ -68,6 +112,8 @@ namespace Procedural.Model {
         }
 
         #region Properties
+
+        public IList<RegionPassage> Passages { get; private set; }
 
         private CellValue[,] Positions {
             get { return map ?? (map = new CellValue[width, height]); }
@@ -125,17 +171,18 @@ namespace Procedural.Model {
             this.width = width;
             this.height = height;
             this.borderSize = borderSize;
+            Passages = new List<RegionPassage>();
         }
 
         #endregion
 
         #region Attributes
 
-        CellValue[,] map;
+        private CellValue[,] map;
 
-        readonly int width;
+        private readonly int width;
 
-        readonly int height;
+        private readonly int height;
 
         private readonly int borderSize;
 

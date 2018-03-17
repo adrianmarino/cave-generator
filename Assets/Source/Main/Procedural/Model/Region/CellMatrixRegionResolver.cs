@@ -5,21 +5,33 @@ using Util;
 namespace Procedural.Model {
     public class CellMatrixRegionResolver {
         public IEnumerable<Region> Resolve(CellValue value) {
-            InitializeVisited(cellMatrix);
+            InitializeVisited();
             return cellMatrix
-                .Where(cell => wasNotVisitedAndHasValue(cell, value))
+                .Where(cell => Equals(cell.Value, value))
                 .Aggregate(new List<Region>(), (regions, cell) => {
-                    var region = GetContainerRegionOf(cell, value);
-                    region.ForEach(MakeVisited);
+                    if (isVisited(cell)) return regions;
+
+                    var regionCells = GetContainerRegionOf(cell, value);
+                    regionCells.ForEach(MakeVisited);
+
+                    var region = new Region(regionCells, GetEdgeCells(regionCells));
+
                     regions.Add(region);
                     return regions;
                 });
         }
 
-        private Region GetContainerRegionOf(Cell startCell, CellValue value) {
+        private IEnumerable<Cell> GetEdgeCells(IEnumerable<Cell> regionCells) {
+            return regionCells
+                .SelectMany(cell => cellMatrix.NeighbourOf(cell, RADIO)
+                .Where(it => it.isWall()));               
+        }
+
+        private IEnumerable<Cell> GetContainerRegionOf(Cell startCell, CellValue value) {
             var regionCells = new List<Cell>();
             var incomingCells = new Queue<Cell>();
             incomingCells.Enqueue(startCell);
+            MakeVisited(startCell);
 
             while (incomingCells.Count > 0){
                 var centralCell = incomingCells.Dequeue();
@@ -27,32 +39,28 @@ namespace Procedural.Model {
 
                 cellMatrix
                     .RadialForEach(centralCell, RADIO)
-                    .Where(cell => cellMatrix.Contains(cell))
-                    .WhereNot(cell => cellMatrix.IsEdge(cell))
-                    .WhereNot(cell => cell.Equals(centralCell))
-                    .Where(cell => wasNotVisitedAndHasValue(cell, value))
+                    .Where(cellMatrix.Contains)
+                    .WhereNot(cellMatrix.IsEdge)
+                    .Where(cell => Equals(cell.Value, value))
+                    .WhereNot(isVisited)
                     .ForEach(cell => {
                         MakeVisited(cell);
                         incomingCells.Enqueue(cell);
                     });
             }
 
-            return new Region(regionCells);
+            return regionCells;
         }
 
         private void MakeVisited(Cell cell) {
-            MakeVisited(cell.Coord.X, cell.Coord.Y);
+            visitedCells[cell.Coord.X, cell.Coord.Y] = true;
         }
 
-        private void MakeVisited(int x, int y) {
-            visitedCells[x, y] = true;
+        private bool isVisited(Cell cell) {
+            return visitedCells[cell.Coord.X, cell.Coord.Y];
         }
 
-        private bool wasNotVisitedAndHasValue(Cell cell, CellValue value) {
-            return !visitedCells[cell.Coord.X, cell.Coord.Y] && cell.Value == value;
-        }
-
-        private void InitializeVisited(CellMatrix cellMatrix) {
+        private void InitializeVisited() {
             visitedCells = new bool[cellMatrix.Width, cellMatrix.Height];
         }
 
@@ -64,7 +72,6 @@ namespace Procedural.Model {
 
         public CellMatrixRegionResolver(CellMatrix cellMatrix) {
             this.cellMatrix = cellMatrix;
-            InitializeVisited(cellMatrix);
         }
     }
 }

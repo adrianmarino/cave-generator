@@ -3,14 +3,17 @@ using Util;
 
 namespace Procedural.Model {
     public static class GizmosUtil {
-        public static void DrawCell(CellMatrix cellMatrix, Cell cell) {
-            var position = new Vector3(
-                cellMatrix.BottomLeft.x + cell.Coord.X,
-                0,
-                cellMatrix.BottomLeft.y + cell.Coord.Y
+
+        public static void DrawPassage(CellMatrix cellMatrix, RegionPassage passage) {
+            Gizmos.color = Color.white;
+            Gizmos.DrawLine(
+                passage.CellA.ToWorld(cellMatrix),
+                passage.CellB.ToWorld(cellMatrix)
             );
+        }
+        public static void DrawCell(CellMatrix cellMatrix, Cell cell) {
             Gizmos.color = cell.isWall() ? Color.black : Color.white;
-            Gizmos.DrawCube(position, Vector3.one);
+            Gizmos.DrawCube(cell.ToWorld(cellMatrix), Vector3.one);
         }
 
         public static void DrawSquare(Square square) {

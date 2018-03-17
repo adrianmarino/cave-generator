@@ -1,20 +1,25 @@
-﻿namespace Procedural.Model {
+﻿using UnityEngine;
+
+namespace Procedural.Model {
     public class Coord {
-        private bool Equals(Coord other) {
+        protected bool Equals(Coord other) {
             return x == other.x && y == other.y;
         }
 
         public override bool Equals(object obj) {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
-            if (obj.GetType() != GetType()) return false;
-            return Equals((Coord) obj);
+            return obj.GetType() == GetType() && Equals((Coord) obj);
         }
 
         public override int GetHashCode() {
             unchecked{
                 return (x * 397) ^ y;
             }
+        }
+        
+        public float Distance(Coord other) {
+            return Mathf.Pow(X - other.X, 2) + Mathf.Pow(Y - other.Y, 2);
         }
 
         public override string ToString() {
