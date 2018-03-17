@@ -4,6 +4,7 @@ using Util;
 
 namespace Procedural.Model {
     public class Region : IEnumerable<Cell> {
+        
         public IEnumerator<Cell> GetEnumerator() {
             foreach (var cell in cells)
                 yield return cell;
@@ -13,7 +14,7 @@ namespace Procedural.Model {
             return GetEnumerator();
         }
 
-        public void SetAllValues(CellValue value) {
+        public void ResetValues(CellValue value) {
             this.ForEach(cell => cell.Value = value);
         }
 

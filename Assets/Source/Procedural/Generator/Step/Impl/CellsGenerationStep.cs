@@ -1,18 +1,25 @@
-﻿using Util;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using Util;
 using Procedural.Model;
 
 namespace Procedural.Generator.Step.Impl {
     public class CellsGenerationStep : IGenerationStep {
         public object Perform(StepContext ctx, object input) {
-            return CreateCellMatrix(ctx)
+            var cellMatrix = 
+                CreateCellMatrix(ctx)
                 .Fill(CreateFillStrategy(ctx))
                 .Smooth(
                     ctx.SmoothSteps,
                     ctx.MaxActiveNeighbors,
                     ctx.NeighboursRadio
-                )
-                .RemoveRegions(ctx.RemoveRegionsSize)
-                .MakeBorders();
+                );
+
+            var survivingRegions = cellMatrix.ResetRegionsWithCellCountLessThan(ctx.RemoveRegionsSize);
+
+            return cellMatrix.MakeBorders();
+
         }
 
         private static RandomFillPercentStrategy CreateFillStrategy(StepContext ctx) {

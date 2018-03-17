@@ -3,7 +3,7 @@ using System.Linq;
 using Util;
 
 namespace Procedural.Model {
-    public static class TriangleUtil {
+    public static class TriangleEnumerations {
         public static IEnumerable<Vertex> DistinctVertices(this IEnumerable<Triangle> triangles) {
             return triangles.Vertices().Distinct();
         }

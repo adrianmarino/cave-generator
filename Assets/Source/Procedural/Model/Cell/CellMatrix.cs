@@ -18,24 +18,9 @@ namespace Procedural.Model {
             return this;
         }
 
-        public CellMatrix RemoveRegions(int cellSize) {
-            if (cellSize <= 0) return this;
-
-            return swapRegionCellValues(region => region.Count < cellSize, CellValue.Wall, CellValue.Floor)
-                .swapRegionCellValues(region => region.Count < cellSize, CellValue.Floor, CellValue.Wall);
-        }
-
-        private CellMatrix swapRegionCellValues(
-            Func<Region, bool> filter,
-            CellValue previousValue,
-            CellValue laterValue
-        ) {
-            RegionsWith(previousValue).Where(filter).ForEach(region => region.SetAllValues(laterValue));
-            return this;
-        }
-
-        private IEnumerable<Region> RegionsWith(CellValue value) {
-            return new CellMatrixRegionResolver(this).Resolve(value);
+        public IEnumerable<Region> ResetRegionsWithCellCountLessThan(int cellSize) {
+            return SwapRegionValues(CellValue.Floor, CellValue.Wall, it => it.Count < cellSize)
+                .Concat(SwapRegionValues(CellValue.Wall, CellValue.Floor,it => it.Count < cellSize));
         }
 
         public CellMatrix Smooth(int steps, int maxSurroundWalls, int wallsSearchRadio) {
@@ -47,6 +32,20 @@ namespace Procedural.Model {
                     else if (surroundWalls < maxSurroundWalls) cell.MakeFloor();
                 });
             return this;
+        }
+
+        public IEnumerable<Region> SwapRegionValues(
+            CellValue previousValue,
+            CellValue laterValue,
+            Func<Region, bool> where
+        ) {
+            var regionGroups = RegionsBy(previousValue).ToLookup(where);
+            regionGroups[true].ResetValues(laterValue);
+            return regionGroups[false];
+        }
+
+        public IEnumerable<Region> RegionsBy(CellValue value) {
+            return new CellMatrixRegionResolver(this).Resolve(value);
         }
 
         private int SurroundWallsCount(Cell centralCell, int radio) {
