@@ -12,40 +12,32 @@ namespace Procedural.Model {
 
         public CellMatrix MakeRegionPassages() {
             Passages.Clear();
-            var regions = RegionsBy(CellValue.Floor);
-            RegionPassage bestPassage = null;
+            var floorRegions = RegionsBy(CellValue.Floor);
 
-            foreach (var regionA in regions){                
-                var possibleConnectionFound = false;
-                var bestDistance = 0f;
+            foreach (var regionA in floorRegions){
+                RegionPassage bestPassage = null;
+                var bestDistance = -1f;
 
-                foreach (var regionB in regions){
-                    if (regionA.Equals(regionB)){
-                        continue;
-                    }
-
-                    if (regionA.isConnected(regionB)){
-                        possibleConnectionFound = false;
-                        break;
-                    }
+                foreach (var regionB in floorRegions){
+                    if (regionA.Equals(regionB)) continue;
+                    if (regionA.isConnected(regionB)) break;
 
                     foreach (var cellA in regionA.EdgeCells){
                         foreach (var cellB in regionB.EdgeCells){
                             var distance = cellA.Distance(cellB);
-                            if (distance < bestDistance || !possibleConnectionFound){
-                                possibleConnectionFound = true;
+
+                            if (bestDistance <= -1f || distance < bestDistance){
                                 bestDistance = distance;
                                 bestPassage = new RegionPassage(regionA, regionB, cellA, cellB);
                             }
                         }
                     }
                 }
-
-                if (bestPassage != null){
-                   bestPassage.RegionA.Passage(bestPassage);
-                   bestPassage.RegionB.Passage(bestPassage);
-                   Passages.Add(bestPassage);
-                }
+                if (bestDistance == -1f) continue;
+                
+                bestPassage.RegionA.Passage(bestPassage);
+                bestPassage.RegionB.Passage(bestPassage);
+                Passages.Add(bestPassage);
             }
             return this;
         }

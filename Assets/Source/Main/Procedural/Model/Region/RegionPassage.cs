@@ -1,5 +1,15 @@
-﻿namespace Procedural.Model {
+﻿using UnityEngine;
+
+namespace Procedural.Model {
     public class RegionPassage {
+
+        public Vector3 CellACoords(Vector3 origin) {
+            return CellA.ToWorld(origin);
+        }
+
+        public Vector3 CellBCoords(Vector3 origin) {
+            return CellB.ToWorld(origin);
+        }
 
         public bool Contains(Region region1, Region region2) {
             return RegionA.Equals(region1) && RegionB.Equals(region2) ||

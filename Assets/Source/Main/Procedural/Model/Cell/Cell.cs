@@ -13,21 +13,17 @@ namespace Procedural.Model {
         }
 
         public override int GetHashCode() {
-            return (coord != null ? coord.GetHashCode() : 0);
+            return coord != null ? coord.GetHashCode() : 0;
         }
 
-        public Vector3 ToWorld(CellMatrix cellMatrix) {
-            return new Vector3 (
-                cellMatrix.BottomLeft.x + Coord.X,
-                0,
-                cellMatrix.BottomLeft.y + Coord.Y
-            );
+        public Vector3 ToWorld(Vector3 originCoords) {
+            return Coord.ToWorld(originCoords);
         }
 
         public float Distance(Cell other) {
             return Coord.Distance(other.Coord);
         }
-        
+
         public static int IntValue(Cell cell) {
             return (int) cell.Value;
         }

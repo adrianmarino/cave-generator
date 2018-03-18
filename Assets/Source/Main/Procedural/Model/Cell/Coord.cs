@@ -2,6 +2,10 @@
 
 namespace Procedural.Model {
     public class Coord {
+        public Vector3 ToWorld(Vector3 originCoords) {
+            return new Vector3 (originCoords.x + X, 0, originCoords.y + Y);
+        }
+        
         protected bool Equals(Coord other) {
             return x == other.x && y == other.y;
         }

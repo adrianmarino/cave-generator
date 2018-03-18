@@ -4,16 +4,15 @@ using Util;
 namespace Procedural.Model {
     public static class GizmosUtil {
 
-        public static void DrawPassage(CellMatrix cellMatrix, RegionPassage passage) {
+        public static void DrawPassage(Vector3 origin, RegionPassage passage) {
             Gizmos.color = Color.white;
-            Gizmos.DrawLine(
-                passage.CellA.ToWorld(cellMatrix),
-                passage.CellB.ToWorld(cellMatrix)
-            );
+            for (var i = 0; i < 20; i++)
+                Gizmos.DrawLine(passage.CellACoords(origin), passage.CellBCoords(origin));
         }
-        public static void DrawCell(CellMatrix cellMatrix, Cell cell) {
+
+        public static void DrawCell(Vector3 origin, Cell cell) {
             Gizmos.color = cell.isWall() ? Color.black : Color.white;
-            Gizmos.DrawCube(cell.ToWorld(cellMatrix), Vector3.one);
+            Gizmos.DrawCube(cell.ToWorld(origin), Vector3.one);
         }
 
         public static void DrawSquare(Square square) {

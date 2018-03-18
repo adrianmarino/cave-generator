@@ -12,8 +12,9 @@ namespace Render {
             Initialize(ctx);
             var cellMatrix = (CellMatrix) ctx.Data;
 
-            cellMatrix.ForEach(cell => GizmosUtil.DrawCell(cellMatrix, cell));
-            cellMatrix.Passages.ForEach(passage => GizmosUtil.DrawPassage(cellMatrix, passage));
+            cellMatrix.ForEach(cell => GizmosUtil.DrawCell(cellMatrix.BottomLeft, cell));
+            cellMatrix.Passages.ForEach(passage => GizmosUtil.DrawPassage(cellMatrix.BottomLeft, passage));
+
         }
 
         private static void Initialize(RenderContext ctx) {
