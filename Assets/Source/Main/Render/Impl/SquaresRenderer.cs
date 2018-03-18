@@ -1,6 +1,7 @@
 ﻿using Render;
 using Util;
 using Procedural.Model;
+using GizmosUtil = Procedural.Model.GizmosUtil;
 
 namespace Procedural.Generator.Output.Impl {
     public class SquaresRenderer : Renderer {

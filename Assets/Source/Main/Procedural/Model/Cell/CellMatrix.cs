@@ -13,15 +13,13 @@ namespace Procedural.Model {
         public CellMatrix MakeRegionPassages() {
             Passages.Clear();
             var floorRegions = RegionsBy(CellValue.Floor);
+            Debug.LogFormat("Regions: {0}", floorRegions.Count());
 
             foreach (var regionA in floorRegions){
                 RegionPassage bestPassage = null;
                 var bestDistance = -1f;
 
-                foreach (var regionB in floorRegions){
-                    if (regionA.Equals(regionB)) continue;
-                    if (regionA.isConnected(regionB)) break;
-
+                foreach (var regionB in floorRegions.WhereNot(regionA.Equals).WhereNot(regionA.isConnected)){
                     foreach (var cellA in regionA.EdgeCells){
                         foreach (var cellB in regionB.EdgeCells){
                             var distance = cellA.Distance(cellB);

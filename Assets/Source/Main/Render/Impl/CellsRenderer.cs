@@ -1,6 +1,6 @@
 ﻿using Util;
 using Procedural.Model;
-using UnityEngine;
+using Gizmos = Procedural.Model.GizmosUtil;
 
 namespace Render {
     public class CellsRenderer : Renderer {
@@ -12,8 +12,8 @@ namespace Render {
             Initialize(ctx);
             var cellMatrix = (CellMatrix) ctx.Data;
 
-            cellMatrix.ForEach(cell => GizmosUtil.DrawCell(cellMatrix.BottomLeft, cell));
-            cellMatrix.Passages.ForEach(passage => GizmosUtil.DrawPassage(cellMatrix.BottomLeft, passage));
+            cellMatrix.ForEach(cell => Gizmos.DrawCell(cellMatrix.BottomLeft, cell));
+            cellMatrix.Passages.ForEach(passage => Gizmos.DrawPassage(cellMatrix.BottomLeft, passage));
 
         }
 

@@ -1,9 +1,14 @@
 ﻿using UnityEngine;
+using Zios;
 
 namespace Procedural.Model {
     public class Coord {
-        public Vector3 ToWorld(Vector3 originCoords) {
-            return new Vector3 (originCoords.x + X, 0, originCoords.y + Y);
+        public Vector3 ToVector3() {
+            return ToVector3(Vector3.zero);
+        }
+
+        public Vector3 ToVector3(Vector3 origin) {
+            return new Vector3 (origin.x + X, 0, origin.y + Y);
         }
         
         protected bool Equals(Coord other) {
@@ -23,7 +28,7 @@ namespace Procedural.Model {
         }
         
         public float Distance(Coord other) {
-            return Mathf.Pow(X - other.X, 2) + Mathf.Pow(Y - other.Y, 2);
+            return ToVector3().Distance(other.ToVector3());
         }
 
         public override string ToString() {

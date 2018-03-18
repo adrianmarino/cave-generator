@@ -16,8 +16,8 @@ namespace Procedural.Model {
             return coord != null ? coord.GetHashCode() : 0;
         }
 
-        public Vector3 ToWorld(Vector3 originCoords) {
-            return Coord.ToWorld(originCoords);
+        public Vector3 GetVector3(Vector3 originCoords) {
+            return Coord.ToVector3(originCoords);
         }
 
         public float Distance(Cell other) {
