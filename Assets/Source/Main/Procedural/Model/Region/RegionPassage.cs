@@ -1,6 +1,12 @@
-﻿namespace Procedural.Model {
+﻿using System.Collections.Generic;
+
+namespace Procedural.Model {
     public class RegionPassage {
 
+        public IEnumerable<RegionPassage> NestedPassages(Region region) {
+            return RegionA == region ? RegionA.Passages : RegionB.Passages;   
+        }
+        
         public float Distance {
             get { return CellA.Distance(CellB); }
         }
@@ -20,6 +26,7 @@
             RegionB = regionB;
             CellA = cellA;
             CellB = cellB;
+            RegionA.Passage(this);
         }
     }
 }

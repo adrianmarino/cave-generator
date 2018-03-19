@@ -2,9 +2,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using NUnit.Framework.Constraints;
 using Procedural.Generator.Step.Impl;
 using UnityEngine;
 using Util;
+using Zios;
 using Random = System.Random;
 
 namespace Procedural.Model {
@@ -13,30 +15,33 @@ namespace Procedural.Model {
         public CellMatrix MakeRegionPassages() {
             Passages.Clear();
             var floorRegions = RegionsBy(CellValue.Floor);
-            Debug.LogFormat("Regions: {0}", floorRegions.Count());
+            if (floorRegions.Count() == 1) return this;
 
-            foreach (var regionA in floorRegions){
+            foreach (var regionA in floorRegions.OrderBy(region => region.Count)){
                 RegionPassage bestPassage = null;
-                var bestDistance = -1f;
+                var bestDistance = 0f;
 
-                foreach (var regionB in floorRegions.WhereNot(regionA.Equals).WhereNot(regionA.isConnected)){
+                var bFloorRegions = floorRegions
+                    .WhereNot(regionA.Equals)
+                    .WhereNot(regionA.Reach)
+                    .OrderBy(region => region.Count);
+
+                foreach (var regionB in bFloorRegions) {
                     foreach (var cellA in regionA.EdgeCells){
                         foreach (var cellB in regionB.EdgeCells){
                             var distance = cellA.Distance(cellB);
+                            if (!(distance < bestDistance) && bestPassage != null) continue;
 
-                            if (bestDistance <= -1f || distance < bestDistance){
-                                bestDistance = distance;
-                                bestPassage = new RegionPassage(regionA, regionB, cellA, cellB);
-                            }
+                            bestDistance = distance;
+                            bestPassage = new RegionPassage(regionA, regionB, cellA, cellB);
                         }
                     }
                 }
-                if (bestDistance == -1f) continue;
-                
-                bestPassage.RegionA.Passage(bestPassage);
-                bestPassage.RegionB.Passage(bestPassage);
-                Passages.Add(bestPassage);
+                if (bestPassage != null)
+                    Passages.Add(bestPassage);
             }
+
+            Debug.LogFormat("Regions: {0} - Passages: {1}", floorRegions.Count(), Passages.Count);
             return this;
         }
         
