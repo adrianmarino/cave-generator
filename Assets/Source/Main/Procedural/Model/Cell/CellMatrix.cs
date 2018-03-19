@@ -14,21 +14,22 @@ namespace Procedural.Model {
 
         public CellMatrix MakeRegionPassages() {
             Passages.Clear();
-            var floorRegions = RegionsBy(CellValue.Floor);
+            var floorRegions = RegionsBy(CellValue.Floor).OrderBy(region => region.Count);
             if (floorRegions.Count() == 1) return this;
 
-            foreach (var regionA in floorRegions.OrderBy(region => region.Count)){
+            foreach (var regionA in floorRegions){
                 RegionPassage bestPassage = null;
                 var bestDistance = 0f;
 
-                var bFloorRegions = floorRegions
-                    .WhereNot(regionA.Equals)
-                    .WhereNot(regionA.Reach)
-                    .OrderBy(region => region.Count);
+                foreach (var regionB in floorRegions.WhereNot(regionA.Equals).WhereNot(regionA.Reach)){
+                    var edgeCellsA = regionA.EdgeCells.ToArray();
+                    var edgeCellsB = regionB.EdgeCells.ToArray();
 
-                foreach (var regionB in bFloorRegions) {
-                    foreach (var cellA in regionA.EdgeCells){
-                        foreach (var cellB in regionB.EdgeCells){
+                    for (var a = 0; a < edgeCellsA.Length; a = a+3) {
+                        for (var b = 0; b < edgeCellsB.Length; b=b+3){
+                            var cellA = edgeCellsA[a];
+                            var cellB = edgeCellsB[b];
+
                             var distance = cellA.Distance(cellB);
                             if (!(distance < bestDistance) && bestPassage != null) continue;
 
