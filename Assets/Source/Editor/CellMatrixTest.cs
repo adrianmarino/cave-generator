@@ -1,11 +1,10 @@
 ﻿using System.Linq;
 using NUnit.Framework;
 using Procedural.Model;
-using UnityEngine.TestTools;
 
 namespace Source.Test {    
     [TestFixture]
-    public class CellMatrixTest: UnityTestAttribute {
+    public class CellMatrixTest {
         [Test]
         public void FindOnlyOneRegion() {
             // Prepare

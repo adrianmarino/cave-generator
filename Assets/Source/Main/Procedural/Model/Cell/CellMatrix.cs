@@ -2,12 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using NUnit.Framework.Constraints;
-using Procedural.Generator.Step.Impl;
 using UnityEngine;
 using Util;
-using Zios;
-using Random = System.Random;
 
 namespace Procedural.Model {
     public class CellMatrix : IEnumerable<Cell>, ITwoDimensionIndexable<Cell> {
